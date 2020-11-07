@@ -10,6 +10,8 @@
 body {
   margin: 0;
   font-family: 'Itim', cursive;
+  background-color: #1B2631 ;
+  color: white;
 }
 </style>
 

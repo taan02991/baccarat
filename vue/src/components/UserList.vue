@@ -1,5 +1,5 @@
 <template>
-<table class="table border">
+<table class="table table-dark">
   <thead>
     <tr>
       <th scope="col">#</th>
@@ -21,3 +21,13 @@
   </tbody>
 </table>
 </template>
+
+<style scoped>
+.table {
+  border-radius: 10px;
+}
+
+.modal-content {
+  color: black;
+}
+</style>

@@ -1,22 +1,24 @@
 <template>
     <div class='container'>
-        <div class='row my-3 p-3'>
+        <div class='row pt-3'>
             <div class='col'>
                 Game ID: 12
                 <br>
                 Betting time: 13s
             </div>
             <div class='col text-center'>
-            <button type="button" class="btn btn-danger">Quit Room</button>
+                <button type="button" class="btn btn-danger">Quit Room</button>
+                <br>
+                <br>
+                Round: 1/8
             </div>
-            <div class='col'>
+            <div class='col text-right'>
                 Username: TestUser
                 <br>
                 Token: 500
             </div>
         </div>
-        <div class='divider'></div>
-        <div class='row my-3'>
+        <div class='card-table row my-3'>
             <div class='col'>
                 <Card :rank='r' :suit='s'></Card>
             </div>
@@ -33,16 +35,23 @@
                 <Card :rank='r' :suit='s'></Card>
             </div>
         </div>
-        <div class='row my-3'>
+        <div class='row my-5'>
             <div class='col-5'>
                 <UserList/>
             </div>
             <div class='col-3'>
-                Amount
+                <div class="input-group mx-auto my-auto">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Amount</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                </div>
+
             </div>
-            <div class='col-2'>
-            </div>
-            <div class='col-2'>
+            <div class='col-4'>
+                <button type="button" class="btn btn-lg btn-block btn-success">Player</button>
+                <button type="button" class="btn btn-lg btn-block btn-danger">Banker</button>
+                <button type="button" class="btn btn-lg btn-block btn-info">Tie</button>
             </div>
         </div>
         <p>Test Animation</p>
@@ -97,5 +106,13 @@ export default{
 </script> 
 
 <style scoped>
+
+.card-table {
+    background-color: green;
+    border-radius: 10px;
+    border: solid;
+    border-color: white;
+    padding: 20px;
+}
 
 </style>
