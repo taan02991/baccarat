@@ -48,6 +48,26 @@
         <p>Test Animation</p>
         <button @click='r=""; s=""'>close card</button>
         <button @click='r="1"; s="S"'>open card</button>
+        <button type="button" @click='showModal'>Launch demo modal</button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Result</h5>
+            </div>
+            <div class="modal-body">
+                <p>Winner: Banker</p>
+                <p>Your bet: Banker</p>
+                <p>Amount: 100</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+        </div>
     </div>
 </template>
  
@@ -64,6 +84,11 @@ export default{
         return {
             r: '1',
             s: 'S'
+        }
+    },
+    methods: {
+        showModal() {
+            $("#modal").modal('toggle');
         }
     }
 }
