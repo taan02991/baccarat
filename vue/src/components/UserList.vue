@@ -26,8 +26,4 @@
 .table {
   border-radius: 10px;
 }
-
-.modal-content {
-  color: black;
-}
 </style>

@@ -58,36 +58,21 @@
         <button @click='r=""; s=""'>close card</button>
         <button @click='r="1"; s="S"'>open card</button>
         <button type="button" @click='showModal'>Launch demo modal</button>
+        <Modal></Modal>
 
-        <!-- Modal -->
-        <div class="modal fade" id="modal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Result</h5>
-            </div>
-            <div class="modal-body">
-                <p>Winner: Banker</p>
-                <p>Your bet: Banker</p>
-                <p>Amount: 100</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-            </div>
-        </div>
-        </div>
     </div>
 </template>
  
 <script>
 import Card from "@/components/Card.vue";
 import UserList from "@/components/UserList.vue";
+import Modal from "@/components/Modal.vue";
 
 export default{
     components: {
         Card,
-        UserList
+        UserList,
+        Modal
     },
     data: function() {
         return {
@@ -114,5 +99,4 @@ export default{
     border-color: white;
     padding: 20px;
 }
-
 </style>
