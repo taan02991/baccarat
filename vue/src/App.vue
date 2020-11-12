@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<style>
+<style src="./assets/tailwind.css">
 @import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
 
 body {
