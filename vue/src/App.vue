@@ -4,8 +4,7 @@
   </div>
 </template>
 
-<style src="./assets/tailwind.css">
-</style>
+<style src="./assets/tailwind.css"></style>
 
 <script>
 export default {

@@ -126,14 +126,14 @@ button:focus {
 <script>
 export default {
   props: ["value"],
-  data: function () {
+  data: function() {
     return {
       fields: {},
-      flight: false,
+      flight: false
     };
   },
   created() {
-    (this.value.fields || []).forEach((field) => {
+    (this.value.fields || []).forEach(field => {
       this.$set(this.fields, field, "");
     });
   },
@@ -145,10 +145,10 @@ export default {
       return this.$store.state.data[this.value.type] || [];
     },
     valid() {
-      return Object.values(this.fields).every((el) => {
+      return Object.values(this.fields).every(el => {
         return el.trim().length > 0;
       });
-    },
+    }
   },
   methods: {
     title(string) {
@@ -161,11 +161,11 @@ export default {
         await this.$store.dispatch("entitySubmit", payload);
         await this.$store.dispatch("entityFetch", payload);
         this.flight = false;
-        Object.keys(this.fields).forEach((f) => {
+        Object.keys(this.fields).forEach(f => {
           this.fields[f] = "";
         });
       }
-    },
-  },
+    }
+  }
 };
 </script>

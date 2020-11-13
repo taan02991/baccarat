@@ -2,12 +2,16 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 import app from "./app.js";
-import { Secp256k1Wallet, SigningCosmosClient, makeCosmoshubPath } from "@cosmjs/launchpad";
+import {
+  Secp256k1Wallet,
+  SigningCosmosClient,
+  makeCosmoshubPath
+} from "@cosmjs/launchpad";
 
 Vue.use(Vuex);
 
 const API = "http://localhost:1317";
-const ADDRESS_PREFIX = "cosmos"
+const ADDRESS_PREFIX = "cosmos";
 
 export default new Vuex.Store({
   state: {
@@ -15,7 +19,7 @@ export default new Vuex.Store({
     account: {},
     chain_id: "",
     data: {},
-    client: null,
+    client: null
   },
   mutations: {
     accountUpdate(state, { account }) {
@@ -31,7 +35,7 @@ export default new Vuex.Store({
     },
     clientUpdate(state, { client }) {
       state.client = client;
-    },
+    }
   },
   actions: {
     async init({ dispatch, state }) {
@@ -45,20 +49,28 @@ export default new Vuex.Store({
       commit("chainIdSet", { chain_id: node_info.network });
     },
     async accountSignIn({ commit }, { mnemonic }) {
-      return new Promise(async (resolve, reject) => {
-        const wallet = await Secp256k1Wallet.fromMnemonic(mnemonic, makeCosmoshubPath(0), ADDRESS_PREFIX);
-        const [{ address }] = await wallet.getAccounts();
-        const url = `${API}/auth/accounts/${address}`;
-        const acc = (await axios.get(url)).data;
-        if (acc.result.value.address === address) {
-          const account = acc.result.value;
-          const client = new SigningCosmosClient(API, address, wallet);
-          commit("accountUpdate", { account });
-          commit("clientUpdate", { client });
-          resolve(account);
-        } else {
-          reject("Account doesn't exist.");
-        }
+      return new Promise((resolve, reject) => {
+        Secp256k1Wallet.fromMnemonic(
+          mnemonic,
+          makeCosmoshubPath(0),
+          ADDRESS_PREFIX
+        ).then(wallet => {
+          wallet.getAccounts().then(([{ address }]) => {
+            const url = `${API}/auth/accounts/${address}`;
+            axios.get(url).then(res => {
+              const acc = res.data;
+              if (acc.result.value.address === address) {
+                const account = acc.result.value;
+                const client = new SigningCosmosClient(API, address, wallet);
+                commit("accountUpdate", { account });
+                commit("clientUpdate", { client });
+                resolve(account);
+              } else {
+                reject("Account doesn't exist.");
+              }
+            });
+          });
+        });
       });
     },
     async entityFetch({ state, commit }, { type }) {
@@ -81,6 +93,6 @@ export default new Vuex.Store({
       const { data } = await axios.post(`${API}/${chain_id}/${type}`, req);
       const { msg, fee, memo } = data.value;
       return await state.client.signAndPost(msg, fee, memo);
-    },
-  },
+    }
+  }
 });

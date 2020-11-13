@@ -30,8 +30,8 @@
 export default {
   props: {
     type: {
-      default: "p1",
-    },
-  },
+      default: "p1"
+    }
+  }
 };
 </script>
