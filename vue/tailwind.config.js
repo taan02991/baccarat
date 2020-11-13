@@ -5,6 +5,9 @@ module.exports = {
   },
   purge: [],
   theme: {
+    fontFamily: {
+      sans: ['"Itim"', 'sans-serif']
+    },
     extend: {
       backgroundColor: {
         primary: "var(--color-bg-primary)",
