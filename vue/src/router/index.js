@@ -1,27 +1,27 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Index from "../views/Index.vue";
 
-const GamePlaying = () => import('@/views/GamePlaying.vue')
+const Index = () => import("../views/Index.vue");
+const GamePlaying = () => import("@/views/GamePlaying.vue");
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
-    component: Index,
+    component: Index
   },
   {
     path: "/game/:id",
     name: GamePlaying,
-    component: GamePlaying,
-  },
+    component: GamePlaying
+  }
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes,
+  routes
 });
 
 export default router;

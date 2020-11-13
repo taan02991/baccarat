@@ -11,7 +11,7 @@ export default {
   computed: {
     typeList() {
       return this.$store.state.app.types || [];
-    },
-  },
+    }
+  }
 };
 </script>

@@ -13,7 +13,7 @@
           :class="[
             'button',
             `button__error__${!!error}`,
-            `button__enabled__${!!mnemonicValid}`,
+            `button__enabled__${!!mnemonicValid}`
           ]"
           @click="signIn"
         >

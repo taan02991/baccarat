@@ -37,19 +37,19 @@ input:disabled {
 export default {
   props: {
     value: {
-      default: "",
+      default: ""
     },
     placeholder: {
-      default: "",
+      default: ""
     },
     disabled: {
-      default: false,
-    },
+      default: false
+    }
   },
   methods: {
     input(event) {
       this.$emit("input", event.target.value);
-    },
-  },
+    }
+  }
 };
 </script>

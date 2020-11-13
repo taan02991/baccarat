@@ -34,9 +34,7 @@
         <Card
           v-for="i in 10"
           v-bind:key="i"
-          :style="
-            'position:absolute; left:' + (i * 1.5) + 'px; z-index: ' + i
-          "
+          :style="'position:absolute; left:' + i * 1.5 + 'px; z-index: ' + i"
         ></Card>
       </div>
       <div class="w-1/5">
@@ -52,11 +50,17 @@
       </div>
       <div class="w-1/5">
         <div class="mt-1 flex rounded-md shadow-sm">
-                  <span class="inline-flex items-center py-3 px-3 rounded-l-md border border-r-0 border-gray-300 text-sm">
-                    Token
-                  </span>
-                  <input type='number' class="form-input text-black px-2 flex-1 block w-full rounded-none rounded-r-md transition duration-150 ease-in-out sm:text-sm sm:leading-5" placeholder="0.00">
-                </div>
+          <span
+            class="inline-flex items-center py-3 px-3 rounded-l-md border border-r-0 border-gray-300 text-sm"
+          >
+            Token
+          </span>
+          <input
+            type="number"
+            class="form-input text-black px-2 flex-1 block w-full rounded-none rounded-r-md transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+            placeholder="0.00"
+          />
+        </div>
       </div>
       <div class="w-2/5 text-right">
         <button
@@ -77,11 +81,27 @@
       </div>
     </div>
     <p>Test Animation</p>
-        <button class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-1 rounded" @click='r=""; s=""'>close card</button>
-        <button class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-1 rounded" @click='r="1"; s="S"'>open card</button>
+    <button
+      class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-1 rounded"
+      @click="
+        r = '';
+        s = '';
+      "
+    >
+      close card
+    </button>
+    <button
+      class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-1 rounded"
+      @click="
+        r = '1';
+        s = 'S';
+      "
+    >
+      open card
+    </button>
   </div>
 </template>
- 
+
 <script>
 import Card from "@/components/Card.vue";
 import UserList from "@/components/UserList.vue";
@@ -89,21 +109,17 @@ import UserList from "@/components/UserList.vue";
 export default {
   components: {
     Card,
-    UserList,
+    UserList
   },
-  data: function () {
+  data: function() {
     return {
       r: "1",
-      s: "S",
+      s: "S"
     };
   },
-  methods: {
-    showModal() {
-      $("#modal").modal("toggle");
-    },
-  },
+  methods: {}
 };
-</script> 
+</script>
 
 <style scoped>
 .card-table {
