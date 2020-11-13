@@ -35,7 +35,7 @@
           v-for="i in 10"
           v-bind:key="i"
           :style="
-            'position:absolute; left:' + (15 + i * 1.5) + 'px; z-index: ' + i
+            'position:absolute; left:' + (i * 1.5) + 'px; z-index: ' + i
           "
         ></Card>
       </div>
