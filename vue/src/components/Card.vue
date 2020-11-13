@@ -38,6 +38,8 @@ export default{
 
 <style scoped>
     .card {
+        position: relative;
+        background-color: white;
         width: 150px;
         height: 200px;
         float: left;
