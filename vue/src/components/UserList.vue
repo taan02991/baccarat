@@ -1,25 +1,30 @@
 <template>
-<table class="table table-dark">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Player</th>
-      <th scope="col">Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Banker: 100</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Player: 50</td>
-    </tr>
-  </tbody>
-</table>
+  <table class="table-auto w-4/5">
+    <thead>
+      <tr>
+        <th class="border px-4 py-2">#</th>
+        <th class="border px-4 py-2">Name</th>
+        <th class="border px-4 py-2">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="border px-4 py-2">1</td>
+        <td class="border px-4 py-2">Adam</td>
+        <td class="border px-4 py-2">Banker: 858</td>
+      </tr>
+      <tr>
+        <td class="border px-4 py-2">2</td>
+        <td class="border px-4 py-2">Adam</td>
+        <td class="border px-4 py-2">Player: 112</td>
+      </tr>
+      <tr>
+        <td class="border px-4 py-2">3</td>
+        <td class="border px-4 py-2">Chris</td>
+        <td class="border px-4 py-2">Tie: 1,280</td>
+      </tr>
+    </tbody>
+  </table>
 </template>
 
 <style scoped>
