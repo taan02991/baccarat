@@ -26,3 +26,22 @@ func GetCmdListUser(queryRoute string, cdc *codec.Codec) *cobra.Command {
 		},
 	}
 }
+
+func GetCmdGetUser(queryRoute string, cdc *codec.Codec) *cobra.Command {
+	return &cobra.Command{
+		Use:   "get-user [address]",
+		Short: "get user by address",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cliCtx := context.NewCLIContext().WithCodec(cdc)
+			res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/%s/%s", queryRoute, types.QueryGetUser, args[0]), nil)
+			if err != nil {
+				fmt.Printf("could not get User\n%s\n", err.Error())
+				return nil
+			}
+			var out types.User
+			cdc.MustUnmarshalJSON(res, &out)
+			return cliCtx.PrintOutput(out)
+		},
+	}
+}
