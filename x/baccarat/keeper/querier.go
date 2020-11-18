@@ -17,6 +17,8 @@ func NewQuerier(k Keeper) sdk.Querier {
     // this line is used by starport scaffolding # 2
 		case types.QueryListUser:
 			return listUser(ctx, k)
+		case types.QueryGetUser:
+			return getUser(ctx, k, path[1:])
 		default:
 			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "unknown baccarat query endpoint")
 		}

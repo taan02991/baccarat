@@ -10,7 +10,7 @@ func handleMsgCreateUser(ctx sdk.Context, k keeper.Keeper, msg types.MsgCreateUs
 	var user = types.User{
 		Creator: msg.Creator,
 		ID:      msg.ID,
-    Name: msg.Name,
+    	Name: msg.Name,
 	}
 	k.CreateUser(ctx, user)
 
