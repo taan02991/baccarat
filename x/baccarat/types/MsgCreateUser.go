@@ -12,13 +12,15 @@ type MsgCreateUser struct {
   ID      string
   Creator sdk.AccAddress `json:"creator" yaml:"creator"`
   Name string `json:"name" yaml:"name"`
+  Addr sdk.AccAddress `json:"addr" yaml:"addr"`
 }
 
-func NewMsgCreateUser(creator sdk.AccAddress, name string) MsgCreateUser {
+func NewMsgCreateUser(creator sdk.AccAddress, name string, addr sdk.AccAddress) MsgCreateUser {
   return MsgCreateUser{
     ID: uuid.New().String(),
 		Creator: creator,
     Name: name,
+    Addr: addr,
 	}
 }
 

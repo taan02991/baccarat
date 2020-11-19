@@ -12,10 +12,10 @@ var INITIAL_AMOUNT, _ = sdk.ParseCoins("1000token")
 
 func (k Keeper) CreateUser(ctx sdk.Context, user types.User) {
 	store := ctx.KVStore(k.storeKey)
-	key := []byte(types.UserPrefix + user.Creator.String())
+	key := []byte(types.UserPrefix + user.Addr.String())
 	value := k.cdc.MustMarshalBinaryLengthPrefixed(user)
   store.Set(key, value)
-  sdkError := k.CoinKeeper.SetCoins(ctx, user.Creator, INITIAL_AMOUNT)
+  sdkError := k.CoinKeeper.SetCoins(ctx, user.Addr, INITIAL_AMOUNT)
   if sdkError != nil {
 		fmt.Printf("could not set initial coin\n%s\n", sdkError.Error())
 	}

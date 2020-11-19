@@ -15,17 +15,22 @@ import (
 
 func GetCmdCreateUser(cdc *codec.Codec) *cobra.Command {
 	return &cobra.Command{
-		Use:   "create-user [name]",
+		Use:   "create-user [name] [addr]",
 		Short: "Creates a new user",
 		Args:  cobra.MinimumNArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
-      argsName := string(args[0])
+	  argsName := string(args[0])
+	  argsAddr, err := sdk.AccAddressFromBech32(args[1])
+	  if err != nil {
+		return err
+	  }
+
       
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
 			inBuf := bufio.NewReader(cmd.InOrStdin())
 			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
-			msg := types.NewMsgCreateUser(cliCtx.GetFromAddress(), argsName)
-			err := msg.ValidateBasic()
+			msg := types.NewMsgCreateUser(cliCtx.GetFromAddress(), argsName ,argsAddr, )
+			err = msg.ValidateBasic()
 			if err != nil {
 				return err
 			}
