@@ -14,6 +14,7 @@ type createUserRequest struct {
 	BaseReq rest.BaseReq `json:"base_req"`
 	Creator string `json:"creator"`
 	Name string `json:"name"`
+	Addr string `json:"addr"`
 	
 }
 
@@ -33,7 +34,12 @@ func createUserHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
 		}
-		msg := types.NewMsgCreateUser(creator,  req.Name, )
+		addr, err := sdk.AccAddressFromBech32(req.Addr)
+		if err != nil {
+			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
+			return
+		}
+		msg := types.NewMsgCreateUser(creator,  req.Name, addr, )
 		utils.WriteGenerateStdTxResponse(w, cliCtx, baseReq, []sdk.Msg{msg})
 	}
 }
