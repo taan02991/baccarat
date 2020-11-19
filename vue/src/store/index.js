@@ -76,17 +76,21 @@ export default new Vuex.Store({
     },
     async accountRegister({ state, commit }, name) {
       const mnemonic = bip39.generateMnemonic();
-      const wallet = await Secp256k1Wallet.fromMnemonic(mnemonic, makeCosmoshubPath(0), ADDRESS_PREFIX);
+      const wallet = await Secp256k1Wallet.fromMnemonic(
+        mnemonic,
+        makeCosmoshubPath(0),
+        ADDRESS_PREFIX
+      );
       const [{ address }] = await wallet.getAccounts();
       const body = {
         name: name,
         addr: address
-      }
+      };
       const fundingWallet = await Secp256k1Wallet.fromMnemonic(
         process.env.VUE_APP_FUNDING_ACCOUNT,
         makeCosmoshubPath(0),
         ADDRESS_PREFIX
-      )
+      );
       const fundingAddr = (await fundingWallet.getAccounts())[0].address;
       const client = new SigningCosmosClient(API, fundingAddr, fundingWallet);
       const { chain_id } = state;
@@ -96,8 +100,7 @@ export default new Vuex.Store({
       const { data } = await axios.post(`${API}/${chain_id}/user`, req);
       const { msg, fee, memo } = data.value;
       await client.signAndPost(msg, fee, memo);
-      return mnemonic
-          
+      return mnemonic;
     },
     async entityFetch({ state, commit }, { type }) {
       const { chain_id } = state;
