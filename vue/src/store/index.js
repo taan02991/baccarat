@@ -17,6 +17,7 @@ const ADDRESS_PREFIX = "cosmos";
 export default new Vuex.Store({
   state: {
     app,
+    name: "",
     account: {},
     chain_id: "",
     data: {},
@@ -36,6 +37,9 @@ export default new Vuex.Store({
     },
     clientUpdate(state, { client }) {
       state.client = client;
+    },
+    setName(state, name) {
+      state.name = name;
     }
   },
   actions: {
@@ -65,6 +69,9 @@ export default new Vuex.Store({
                 const client = new SigningCosmosClient(API, address, wallet);
                 commit("accountUpdate", { account });
                 commit("clientUpdate", { client });
+                axios.get(`${API}/baccarat/user/${address}`).then(res => {
+                  commit("setName", res.data.result.name);
+                })
                 resolve(account);
               } else {
                 reject("Account doesn't exist.");

@@ -17,4 +17,5 @@ func RegisterRoutes(cliCtx context.CLIContext, r *mux.Router) {
 	r.HandleFunc("/baccarat/game/participant", editParticipantHandler(cliCtx)).Methods("POST")
 	r.HandleFunc("/baccarat/user", listUserHandler(cliCtx, "baccarat")).Methods("GET")
 	r.HandleFunc("/baccarat/user", createUserHandler(cliCtx)).Methods("POST")
+	r.HandleFunc("/baccarat/user/{addr}", getUserHandler(cliCtx)).Methods("GET")
 }
