@@ -11,6 +11,7 @@ func RegisterCodec(cdc *codec.Codec) {
 		cdc.RegisterConcrete(MsgStartGame{}, "baccarat/StartGame", nil)
 		cdc.RegisterConcrete(MsgBet{}, "baccarat/Bet", nil)
 		cdc.RegisterConcrete(MsgCreateUser{}, "baccarat/CreateUser", nil)
+		cdc.RegisterConcrete(MsgEditParticipant{}, "baccarat/EditParticipant", nil)
 }
 
 // ModuleCdc defines the module codec
