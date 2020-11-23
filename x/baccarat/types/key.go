@@ -18,3 +18,7 @@ const (
 	UserPrefix = "user-"
 )
 		
+const (
+	GamePrefix = "game-"
+)
+		

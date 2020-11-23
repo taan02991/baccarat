@@ -7,3 +7,5 @@ const (
 )
 
 		
+const (QueryListGame = "list-game")
+		
