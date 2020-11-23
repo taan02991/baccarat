@@ -6,7 +6,6 @@ import (
 	"github.com/blockchain/baccarat/x/baccarat/types"
 	"github.com/blockchain/baccarat/x/baccarat/keeper"
 	"github.com/tendermint/tendermint/crypto"
-	"fmt"
 )
 
 func handleMsgBet(ctx sdk.Context, k keeper.Keeper, msg types.MsgBet) (*sdk.Result, error) {
@@ -53,8 +52,12 @@ func handleMsgBet(ctx sdk.Context, k keeper.Keeper, msg types.MsgBet) (*sdk.Resu
 	}
 
 	if isAllBet {
-		fmt.Println("**************************result\n")
 		k.RevealResult(ctx, msg.ID)
+		if len(game.ResultHash) < 8 {
+			k.AppendResultHash(ctx, msg.ID)
+		} else {
+			k.EndGame(ctx, msg.ID)
+		}
 	}
 
 	return &sdk.Result{Events: ctx.EventManager().Events()}, nil
