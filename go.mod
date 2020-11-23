@@ -3,6 +3,7 @@ module github.com/blockchain/baccarat
 go 1.14
 
 require (
+	github.com/allegro/bigcache v1.2.1
 	github.com/cosmos/cosmos-sdk v0.39.1
 	github.com/golang/mock v1.4.3 // indirect
 	github.com/google/uuid v1.0.0

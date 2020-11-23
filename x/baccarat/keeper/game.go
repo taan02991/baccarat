@@ -5,6 +5,7 @@ import (
 	"github.com/blockchain/baccarat/x/baccarat/types"
   "github.com/cosmos/cosmos-sdk/codec"
   "fmt"
+  "github.com/blockchain/baccarat/x/baccarat/helper"
 )
 
 func (k Keeper) CreateGame(ctx sdk.Context, game types.Game) {
@@ -24,9 +25,10 @@ func (k Keeper) StartGame(ctx sdk.Context, id string) {
     return
   }
   game.State = types.Playing
-  //Todo: generate card deck & draw first 4 cards and save hash in cache
-  game.ResultHash = append(game.ResultHash, "1A,2B;4S,5K")
-	value := k.cdc.MustMarshalBinaryLengthPrefixed(game)
+  //Todo: generate card deck & draw first 4 cards and save in cache
+  helper.SetCache(id, "1A,2B;4S,5K")
+  game.ResultHash = append(game.ResultHash, "XXX")
+  value := k.cdc.MustMarshalBinaryLengthPrefixed(game)
   store.Set(key, value)
 }
 
@@ -83,11 +85,13 @@ func (k Keeper) RevealResult(ctx sdk.Context, id string) {
   key := []byte(types.GamePrefix + id)
   err := k.cdc.UnmarshalBinaryLengthPrefixed(store.Get(key), &game)
   if err != nil {
-    fmt.Printf("Failed to start game:\n%s\n", err.Error())
+    fmt.Printf("Failed to reveal result game:\n%s\n", err.Error())
     return
   }
+  //Todo: distribute money to winner
   //Todo: get card from cahce
-  game.Result = append(game.Result, "1A,2B;4S,5K")
+  v, _ := helper.GetCache(id)
+  game.Result = append(game.Result, v)
 	value := k.cdc.MustMarshalBinaryLengthPrefixed(game)
   store.Set(key, value)
 }
@@ -98,11 +102,12 @@ func (k Keeper) AppendResultHash(ctx sdk.Context, id string) {
   key := []byte(types.GamePrefix + id)
   err := k.cdc.UnmarshalBinaryLengthPrefixed(store.Get(key), &game)
   if err != nil {
-    fmt.Printf("Failed to start game:\n%s\n", err.Error())
+    fmt.Printf("Failed to append result hash:\n%s\n", err.Error())
     return
   }
-
-  game.ResultHash = append(game.ResultHash, "1A,2B;4S,5K")
+  //Todo: hash card store in ResulHash, real card store in cahce
+  helper.SetCache(id, "1A,2B;4S,5K")
+  game.ResultHash = append(game.ResultHash, "XXX")
 	value := k.cdc.MustMarshalBinaryLengthPrefixed(game)
   store.Set(key, value)
 }
@@ -113,10 +118,9 @@ func (k Keeper) EndGame(ctx sdk.Context, id string) {
   key := []byte(types.GamePrefix + id)
   err := k.cdc.UnmarshalBinaryLengthPrefixed(store.Get(key), &game)
   if err != nil {
-    fmt.Printf("Failed to start game:\n%s\n", err.Error())
+    fmt.Printf("Failed to end game:\n%s\n", err.Error())
     return
   }
-  //Todo: draw 4 cards & save hash in cache
   game.State = types.End
 	value := k.cdc.MustMarshalBinaryLengthPrefixed(game)
   store.Set(key, value)
