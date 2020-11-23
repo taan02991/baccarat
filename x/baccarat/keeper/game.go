@@ -44,6 +44,39 @@ func (k Keeper) Bet(ctx sdk.Context, id string, bet types.Bet) {
   store.Set(key, value)
 }
 
+func (k Keeper) EditParticipant(ctx sdk.Context, id string, creator sdk.AccAddress, action types.ParticipantAction) {
+  var game types.Game
+	store := ctx.KVStore(k.storeKey)
+  key := []byte(types.GamePrefix + id)
+  err := k.cdc.UnmarshalBinaryLengthPrefixed(store.Get(key), &game)
+  if err != nil {
+    fmt.Printf("Failed to edit participant:\n%s\n", err.Error())
+    return
+  }
+  if action == types.Join && len(game.Participant) < 6 {
+      for _, e := range game.Participant {
+        if e.Equals(creator) == true {
+          return
+        }
+        game.Participant = append(game.Participant, creator)
+      }
+  } else if action == types.Leave {
+      for i, e := range game.Participant {
+        if e.Equals(creator) == true {
+          game.Participant = append(game.Participant[:i], game.Participant[i+1:]...)
+          if len(game.Participant) == 0 {
+            game.State = types.End
+          }
+        }
+      }
+  } else {
+    fmt.Printf("Edit participant action doesn't match\n")
+    return
+  }
+	value := k.cdc.MustMarshalBinaryLengthPrefixed(game)
+  store.Set(key, value)
+}
+
 func listGame(ctx sdk.Context, k Keeper) ([]byte, error) {
   var gameList []types.Game
   store := ctx.KVStore(k.storeKey)
