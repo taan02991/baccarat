@@ -1,0 +1,37 @@
+package types
+
+import (
+	sdk "github.com/cosmos/cosmos-sdk/types"
+)
+
+type Game struct {
+	Creator     sdk.AccAddress    `json:"creator" yaml:"creator"`
+	ID          string            `json:"id" yaml:"id"`
+  State       StateType         `json:"state" yaml:"state"`
+  Participant []sdk.AccAddress  `json:"participant" yaml:"participant"`
+  Result      []string            `json:"result" yaml:"result"`
+  ResultHash  []string            `json:"resultHash" yaml:"resultHash"`
+  Bet         [][]Bet            `json:"bet" yaml:"bet"`
+}
+
+type StateType string
+
+const (
+  Waiting StateType = "Waiting"
+  Playing           = "Playing"
+  End               = "End"
+)
+
+type Bet struct {
+  Creator sdk.AccAddress  `json:"creator" yaml:"creator"`
+  Side    BetSide         `json:"side" yaml:"side"`
+  Amount  int             `json:"amount" yaml:"amount"`
+}
+
+type BetSide string
+
+const (
+  Player BetSide = "Player"
+  Banker BetSide = "Banker"
+  Tie BetSide = "Tie"
+)
