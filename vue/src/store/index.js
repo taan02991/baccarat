@@ -71,7 +71,7 @@ export default new Vuex.Store({
                 commit("clientUpdate", { client });
                 axios.get(`${API}/baccarat/user/${address}`).then(res => {
                   commit("setName", res.data.result.name);
-                })
+                });
                 resolve(account);
               } else {
                 reject("Account doesn't exist.");
