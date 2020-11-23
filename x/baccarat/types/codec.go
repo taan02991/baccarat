@@ -9,6 +9,7 @@ func RegisterCodec(cdc *codec.Codec) {
   // this line is used by starport scaffolding
 		cdc.RegisterConcrete(MsgCreateGame{}, "baccarat/CreateGame", nil)
 		cdc.RegisterConcrete(MsgStartGame{}, "baccarat/StartGame", nil)
+		cdc.RegisterConcrete(MsgBet{}, "baccarat/Bet", nil)
 		cdc.RegisterConcrete(MsgCreateUser{}, "baccarat/CreateUser", nil)
 }
 
