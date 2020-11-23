@@ -17,6 +17,8 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
     // this line is used by starport scaffolding
 		case types.MsgCreateGame:
 			return handleMsgCreateGame(ctx, k, msg)
+		case types.MsgStartGame:
+			return handleMsgStartGame(ctx, k, msg)
 		case types.MsgCreateUser:
 			return handleMsgCreateUser(ctx, k, msg)
 		default:
