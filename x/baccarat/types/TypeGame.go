@@ -25,7 +25,7 @@ const (
 type Bet struct {
   Creator sdk.AccAddress  `json:"creator" yaml:"creator"`
   Side    BetSide         `json:"side" yaml:"side"`
-  Amount  int             `json:"amount" yaml:"amount"`
+  Amount  sdk.Coins             `json:"amount" yaml:"amount"`
 }
 
 type BetSide string

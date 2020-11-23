@@ -19,6 +19,8 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 			return handleMsgCreateGame(ctx, k, msg)
 		case types.MsgStartGame:
 			return handleMsgStartGame(ctx, k, msg)
+		case types.MsgBet:
+			return handleMsgBet(ctx, k, msg)
 		case types.MsgCreateUser:
 			return handleMsgCreateUser(ctx, k, msg)
 		default:

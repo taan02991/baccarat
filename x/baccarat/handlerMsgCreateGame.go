@@ -12,9 +12,9 @@ func handleMsgCreateGame(ctx sdk.Context, k keeper.Keeper, msg types.MsgCreateGa
 		ID:      		msg.ID,
 		State:			types.Waiting,
 		Participant: 	[]sdk.AccAddress {msg.Creator},
-		Result: 		[]string {},
-		ResultHash: 	[]string {},
-		Bet: 			[][]types.Bet {},
+		Result: 		make([]string, 0, 8),
+		ResultHash: 	make([]string, 0, 8),
+		Bet: 			make([][]types.Bet, 8, 8),
 	}
 	k.CreateGame(ctx, game)
 

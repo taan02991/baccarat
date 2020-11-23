@@ -159,7 +159,7 @@ export default {
         this.flight = true;
         const payload = { type: this.value.type, body: this.fields };
         await this.$store.dispatch("entitySubmit", payload);
-        await this.$store.dispatch("entityFetch", payload);
+        this.$store.dispatch("entityFetch", payload);
         this.flight = false;
         Object.keys(this.fields).forEach(f => {
           this.fields[f] = "";

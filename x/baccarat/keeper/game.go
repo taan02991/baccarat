@@ -25,7 +25,21 @@ func (k Keeper) StartGame(ctx sdk.Context, id string) {
   }
   game.State = types.Playing
   //Todo: generate card deck & draw first 4 cards
-  game.ResultHash = []string {"1A,2B;4S,5K"}
+  game.ResultHash = append(game.ResultHash, "1A,2B;4S,5K")
+	value := k.cdc.MustMarshalBinaryLengthPrefixed(game)
+  store.Set(key, value)
+}
+
+func (k Keeper) Bet(ctx sdk.Context, id string, bet types.Bet) {
+  var game types.Game
+	store := ctx.KVStore(k.storeKey)
+  key := []byte(types.GamePrefix + id)
+  err := k.cdc.UnmarshalBinaryLengthPrefixed(store.Get(key), &game)
+  if err != nil {
+    fmt.Printf("Failed to bet:\n%s\n", err.Error())
+    return
+  }
+  game.Bet[len(game.ResultHash ) - 1] = append(game.Bet[len(game.ResultHash) - 1], bet)
 	value := k.cdc.MustMarshalBinaryLengthPrefixed(game)
   store.Set(key, value)
 }
