@@ -25,8 +25,10 @@ func (k Keeper) StartGame(ctx sdk.Context, id string) {
     return
   }
   game.State = types.Playing
-  //Todo: generate card deck & draw first 4 cards and save in cache
-  helper.SetCache(id, "1A,2B;4S,5K")
+  deck := helper.GenerateDeck()
+  hand, deck := helper.DrawCard(deck)
+  helper.SetCache(id + "-deck", deck)
+  helper.SetCache(id, hand)
   game.ResultHash = append(game.ResultHash, "XXX")
   value := k.cdc.MustMarshalBinaryLengthPrefixed(game)
   store.Set(key, value)
@@ -89,7 +91,6 @@ func (k Keeper) RevealResult(ctx sdk.Context, id string) {
     return
   }
   //Todo: distribute money to winner
-  //Todo: get card from cahce
   v, _ := helper.GetCache(id)
   game.Result = append(game.Result, v)
 	value := k.cdc.MustMarshalBinaryLengthPrefixed(game)
@@ -105,8 +106,10 @@ func (k Keeper) AppendResultHash(ctx sdk.Context, id string) {
     fmt.Printf("Failed to append result hash:\n%s\n", err.Error())
     return
   }
-  //Todo: hash card store in ResulHash, real card store in cahce
-  helper.SetCache(id, "1A,2B;4S,5K")
+  
+  deck, _ := helper.GetCache(id + "-deck")
+  hand, deck := helper.DrawCard(deck)
+  helper.SetCache(id, hand)
   game.ResultHash = append(game.ResultHash, "XXX")
 	value := k.cdc.MustMarshalBinaryLengthPrefixed(game)
   store.Set(key, value)
