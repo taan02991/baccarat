@@ -18,9 +18,9 @@
         Round: 1/8
       </div>
       <div class="w-1/3 text-right">
-        Username: TestUser
+        Username: {{ name }}
         <br />
-        Token: 500
+        <div>Token: {{ token }}</div>
       </div>
     </div>
     <div class="card-table flex my-3">
@@ -99,23 +99,68 @@
     >
       open card
     </button>
+    <button
+      class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-1 rounded"
+      @click="
+        resultShow = true;
+        resultWinner = 'Player';
+        resultBet = 'Banker';
+        resultAmount = 1000;
+      "
+    >
+      show result
+    </button>
+    <Result
+      @close="resultShow = false"
+      :show="resultShow"
+      :winner="resultWinner"
+      :bet="resultBet"
+      :amount="resultAmount"
+    ></Result>
   </div>
 </template>
 
 <script>
 import Card from "@/components/Card.vue";
 import UserList from "@/components/UserList.vue";
+import Result from "@/components/Result.vue";
 
 export default {
   components: {
     Card,
-    UserList
+    UserList,
+    Result
   },
   data: function() {
     return {
       r: "1",
-      s: "S"
+      s: "S",
+      resultShow: false,
+      resultWinner: "",
+      resultBet: "",
+      resultAmount: ""
     };
+  },
+  computed: {
+    account() {
+      return this.$store.state.account;
+    },
+    address() {
+      const { client } = this.$store.state;
+      const address = client && client.senderAddress;
+      return address;
+    },
+    name() {
+      return this.$store.state.name;
+    },
+    token() {
+      if (this.account.coins) {
+        return this.account.coins.filter(coin => {
+          return coin.denom === "token";
+        })[0].amount;
+      }
+      return 0;
+    }
   },
   methods: {}
 };
