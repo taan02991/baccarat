@@ -77,6 +77,33 @@ func (k Keeper) EditParticipant(ctx sdk.Context, id string, creator sdk.AccAddre
   store.Set(key, value)
 }
 
+func (k Keeper) RevealResult(ctx sdk.Context, id string) {
+  var game types.Game
+	store := ctx.KVStore(k.storeKey)
+  key := []byte(types.GamePrefix + id)
+  err := k.cdc.UnmarshalBinaryLengthPrefixed(store.Get(key), &game)
+  if err != nil {
+    fmt.Printf("Failed to start game:\n%s\n", err.Error())
+    return
+  }
+  //Todo: get card from cahce
+  game.Result = append(game.Result, "1A,2B;4S,5K")
+	value := k.cdc.MustMarshalBinaryLengthPrefixed(game)
+  store.Set(key, value)
+}
+
+func (k Keeper) GetGame(ctx sdk.Context, id string) (types.Game, error) {
+  var game types.Game
+	store := ctx.KVStore(k.storeKey)
+  key := []byte(types.GamePrefix + id)
+  err := k.cdc.UnmarshalBinaryLengthPrefixed(store.Get(key), &game)
+  if err != nil {
+    fmt.Printf("Failed to get game:\n%s\n", err.Error())
+    return game, err
+  }
+  return game, nil
+}
+
 func listGame(ctx sdk.Context, k Keeper) ([]byte, error) {
   var gameList []types.Game
   store := ctx.KVStore(k.storeKey)
