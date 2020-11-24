@@ -4,6 +4,9 @@ import (
 	"math/rand"
 	"time"
 	"strings"
+	"github.com/blockchain/baccarat/x/baccarat/types"
+	"strconv"
+	"math"
 )
 
 func DrawCard(deck string) (string, string) {
@@ -32,6 +35,25 @@ func Shuffle(deck []string) []string {
 		deck[i], deck[j] = deck[j], deck[i]
 	}
 	return deck
+}
+
+func Winner(hand string) (types.BetSide, int) {
+	pb := strings.Split(hand, ";")
+	player := strings.Split(pb[0], ",")
+	banker := strings.Split(pb[1], ",")
+	p1, _ := strconv.Atoi(player[0][:len(player[0]) - 1])
+	p2, _ := strconv.Atoi(player[1][:len(player[1]) - 1])
+	b1, _ := strconv.Atoi(banker[0][:len(banker[0]) - 1])
+	b2, _ := strconv.Atoi(banker[1][:len(banker[1]) - 1])
+	distPlayer := math.Abs(9 - float64(p1 + p2))
+	distBanker :=  math.Abs(9 - float64(b1 + b2))
+	if distPlayer == distBanker {
+		return types.Tie, 5
+	} else if distPlayer < distBanker {
+		return types.Player, 2
+	} else {
+		return types.Banker, 2
+	}
 }
 
 
