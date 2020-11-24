@@ -18,6 +18,9 @@ func handleMsgBet(ctx sdk.Context, k keeper.Keeper, msg types.MsgBet) (*sdk.Resu
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Game does not exists")
 	}
+	if game.State != types.Playing {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Game is not Playing")
+	}
 	for _, e := range game.Bet[len(game.ResultHash) - 1] {
 		if e.Creator.Equals(bet.Creator) {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "You already bet")
