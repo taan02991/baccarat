@@ -3,10 +3,10 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import _ from "lodash";
-import axios from 'axios'
+import axios from "axios";
 
 Vue.config.productionTip = false;
-axios.defaults.baseURL = process.env.VUE_APP_API
+axios.defaults.baseURL = process.env.VUE_APP_API;
 
 Object.defineProperty(Vue.prototype, "$lodash", { value: _ });
 

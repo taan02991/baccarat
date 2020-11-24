@@ -2,9 +2,9 @@
   <div class="container mx-auto pt-4 w-4/5">
     <div class="flex">
       <div class="w-1/3">
-        Game ID: 12
+        Game ID: {{ game.id }}
         <br />
-        Betting time: 13s
+        Status: {{ game.state }}
       </div>
       <div class="w-1/3 text-center">
         <button
@@ -15,7 +15,7 @@
         </button>
         <br />
         <br />
-        Round: 1/8
+        Round: {{ game.resultHash ? game.resultHash.length : 0 }}/8
       </div>
       <div class="w-1/3 text-right">
         Username: {{ name }}
@@ -62,7 +62,7 @@
           />
         </div>
       </div>
-      <div class="w-2/5 text-right">
+      <div class="w-2/5 text-right" v-if="game.state == 'Playing'">
         <button
           class="bg-green-500 hover:bg-green-700 text-white font-bold py-4 px-4 rounded w-4/5"
         >
@@ -79,7 +79,21 @@
           Tie
         </button>
       </div>
+      <div class="w-2/5 text-right" v-if="game.state == 'Waiting'">
+        <button
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded w-4/5"
+        >
+          Start
+        </button>
+      </div>
     </div>
+    <Result
+      @close="resultShow = false"
+      :show="resultShow"
+      :winner="resultWinner"
+      :bet="resultBet"
+      :amount="resultAmount"
+    ></Result>
     <p>Test Animation</p>
     <button
       class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-1 rounded"
@@ -110,17 +124,11 @@
     >
       show result
     </button>
-    <Result
-      @close="resultShow = false"
-      :show="resultShow"
-      :winner="resultWinner"
-      :bet="resultBet"
-      :amount="resultAmount"
-    ></Result>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 import Card from "@/components/Card.vue";
 import UserList from "@/components/UserList.vue";
 import Result from "@/components/Result.vue";
@@ -133,6 +141,7 @@ export default {
   },
   data: function() {
     return {
+      game: {},
       r: "1",
       s: "S",
       resultShow: false,
@@ -140,6 +149,19 @@ export default {
       resultBet: "",
       resultAmount: ""
     };
+  },
+  async mounted() {
+    await this.$store.dispatch("entitySubmit", {
+      type: "game/participant",
+      body: {
+        id: this.$route.params.id,
+        action: "Join"
+      }
+    });
+
+    await axios.get(`/baccarat/game/${this.$route.params.id}`).then(res => {
+      this.game = res.data.result;
+    });
   },
   computed: {
     account() {
@@ -162,7 +184,17 @@ export default {
       return 0;
     }
   },
-  methods: {}
+  methods: {
+    async onLeave() {
+      await this.$store.dispatch("entitySubmit", {
+        type: "game/participant",
+        body: {
+          id: this.$route.params.id,
+          action: "Leave"
+        }
+      });
+    }
+  }
 };
 </script>
 
