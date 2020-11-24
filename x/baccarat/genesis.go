@@ -6,6 +6,7 @@ import (
 	"github.com/blockchain/baccarat/x/baccarat/types"
 	// abci "github.com/tendermint/tendermint/abci/types"
 	"fmt"
+	"github.com/tendermint/tendermint/crypto"
 )
 
 // InitGenesis initialize default parameters
@@ -21,6 +22,13 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper /* TODO: Define what keepers t
 	sdkError := k.CoinKeeper.SetCoins(ctx, fundingAddr, amount)
 	if sdkError != nil {
 		fmt.Printf("could not set module account coin\n%s\n", sdkError.Error())
+	}
+
+	amount, _ = sdk.ParseCoins("1000000000token")
+	moduleAcct := sdk.AccAddress(crypto.AddressHash([]byte(types.ModuleName)))
+	sdkError = k.CoinKeeper.SetCoins(ctx, moduleAcct, amount)
+	if sdkError != nil {
+		return
 	}
 }
 

@@ -6,6 +6,8 @@ import (
   "github.com/cosmos/cosmos-sdk/codec"
   "fmt"
   "github.com/blockchain/baccarat/x/baccarat/helper"
+  "github.com/tendermint/tendermint/crypto"
+  "strconv"
 )
 
 func (k Keeper) CreateGame(ctx sdk.Context, game types.Game) {
@@ -90,9 +92,23 @@ func (k Keeper) RevealResult(ctx sdk.Context, id string) {
     fmt.Printf("Failed to reveal result game:\n%s\n", err.Error())
     return
   }
-  //Todo: distribute money to winner
   v, _ := helper.GetCache(id)
   game.Result = append(game.Result, v)
+  //Todo: distribute money to winner
+  winner, ratio := helper.Winner(v)
+  for _, e := range game.Bet[len(game.ResultHash ) - 1] {
+    if e.Side == winner {
+      reward, _ := strconv.Atoi(e.Amount.AmountOf("token").String())
+      coins, _ := sdk.ParseCoins(strconv.Itoa(reward * ratio) + "token")
+      moduleAcct := sdk.AccAddress(crypto.AddressHash([]byte(types.ModuleName)))
+      sdkError := k.CoinKeeper.SendCoins(ctx, moduleAcct, e.Creator, coins)
+      if sdkError != nil {
+        return
+      }
+
+
+    }
+  }
 	value := k.cdc.MustMarshalBinaryLengthPrefixed(game)
   store.Set(key, value)
 }
@@ -106,9 +122,10 @@ func (k Keeper) AppendResultHash(ctx sdk.Context, id string) {
     fmt.Printf("Failed to append result hash:\n%s\n", err.Error())
     return
   }
-  
+
   deck, _ := helper.GetCache(id + "-deck")
   hand, deck := helper.DrawCard(deck)
+  helper.SetCache(id + "-deck", deck)
   helper.SetCache(id, hand)
   game.ResultHash = append(game.ResultHash, "XXX")
 	value := k.cdc.MustMarshalBinaryLengthPrefixed(game)
