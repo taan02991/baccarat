@@ -26,10 +26,10 @@
     </div>
     <div class="card-table flex my-3">
       <div class="w-1/5">
-        <Card :rank="r" :suit="s"></Card>
+        <Card :rank="resultP1.r" :suit="resultP1.s"></Card>
       </div>
       <div class="w-1/5">
-        <Card :rank="r" :suit="s"></Card>
+        <Card :rank="resultP2.r" :suit="resultP2.s"></Card>
       </div>
       <div class="w-1/5 relative">
         <Card
@@ -39,10 +39,10 @@
         ></Card>
       </div>
       <div class="w-1/5">
-        <Card :rank="r" :suit="s"></Card>
+        <Card :rank="resultB1.r" :suit="resultB1.s"></Card>
       </div>
       <div class="w-1/5">
-        <Card :rank="r" :suit="s"></Card>
+        <Card :rank="resultB2.r" :suit="resultB2.s"></Card>
       </div>
     </div>
     <div class="flex mt-5">
@@ -60,21 +60,25 @@
             type="number"
             class="form-input text-black px-2 flex-1 block w-full rounded-none rounded-r-md transition duration-150 ease-in-out sm:text-sm sm:leading-5"
             placeholder="0.00"
+            v-model="amount"
           />
         </div>
       </div>
       <div class="w-2/5 text-right" v-if="game.state == 'Playing'">
         <button
+        @click="onBet('Player')"
           class="bg-green-500 hover:bg-green-700 text-white font-bold py-4 px-4 rounded w-4/5"
         >
           Player
         </button>
         <button
+        @click="onBet('Banker')"
           class="bg-red-500 hover:bg-red-700 text-white font-bold py-4 px-4 mt-3 rounded w-4/5"
         >
           Banker
         </button>
         <button
+          @click="onBet('Tie')"
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 mt-3 rounded w-4/5"
         >
           Tie
@@ -131,6 +135,7 @@
 
 <script>
 import axios from "axios";
+import { RpcClient } from 'tendermint';
 import Card from "@/components/Card.vue";
 import UserList from "@/components/UserList.vue";
 import Result from "@/components/Result.vue";
@@ -149,11 +154,18 @@ export default {
       resultShow: false,
       resultWinner: "",
       resultBet: "",
-      resultAmount: ""
+      resultAmount: "",
+      resultP1: {r: "", s: ""},
+      resultP2: {r: "", s: ""},
+      resultB1: {r: "", s: ""},
+      resultB2: {r: "", s: ""},
+      amount: 0,
+      rpcClient: null,
     };
   },
   async mounted() {
     this.initConnection(10);
+    this.initRpcConnection();
   },
   computed: {
     account() {
@@ -199,6 +211,39 @@ export default {
           this.initConnection(n - 1);
         });
     },
+    async initRpcConnection() {
+      this.rpcClient = RpcClient(process.env.VUE_APP_TENDERMINT_NODE);
+      this.rpcClient.subscribe([`tm.event='Tx' AND updateGame.gameID = '${this.$route.params.id}'`], (data) => {
+        this.fetchGame()
+      })
+      this.rpcClient.subscribe([`tm.event='Tx' AND revealResult.gameID = '${this.$route.params.id}' AND revealResult.address = '${this.address}'`], ( data ) => {
+        data.TxResult.result.events.forEach( e => {
+          let obj = {}
+          if(e.type == "revealResult") {
+            e.attributes.forEach(element => {
+              let key = atob(element.key);
+              let value = atob(element.value);
+              obj[key] = value
+            });
+            if(obj["address"] === this.address) {
+              console.log(obj)
+              this.resultWinner = obj["winner"]
+              this.resultAmount = obj["reward"]
+              this.resultBet = obj["betSide"]
+              this.resultShow = true
+              let [player, banker] = obj["card"].split(";")
+              let [P1, P2] = player.split(",")
+              let [B1, B2] = banker.split(",")
+              this.resultP1 = {r: P1.slice(0, -1), s: P1.slice(-1)}
+              this.resultP2 = {r: P2.slice(0, -1), s: P2.slice(-1)}
+              this.resultB1 = {r: B1.slice(0, -1), s: B1.slice(-1)}
+              this.resultB2 = {r: B2.slice(0, -1), s: B2.slice(-1)}
+              return true
+            }
+          }
+        })
+      })
+    },
     async onLeave() {
       await this.$store.dispatch("entitySubmit", {
         type: "game/participant",
@@ -216,7 +261,30 @@ export default {
           id: this.$route.params.id
         }
       });
-      await this.$store.dispatch("entityFetch", { type: "game"})
+      await this.fetchGame()
+    },
+    async onBet(side) {
+      this.resultP1 = {r: "", s: ""}
+      this.resultP2 = {r: "", s: ""}
+      this.resultB1 = {r: "", s: ""}
+      this.resultB2 = {r: "", s: ""}
+      await this.$store.dispatch("entitySubmit", {
+        type: "game/bet",
+        body: {
+          id: this.$route.params.id,
+          side: side,
+          amount: this.amount + "token"
+        }
+      });
+      this.amount = 0
+      await this.fetchGame()
+      await this.$store.dispatch("accountUpdate")
+
+    },
+    async fetchGame() {
+      await axios.get(`/baccarat/game/${this.$route.params.id}`).then(res => {
+        this.game = res.data.result;
+      })
     }
   }
 };

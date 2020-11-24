@@ -8,5 +8,12 @@ import (
 
 func handleMsgEditParticipant(ctx sdk.Context, k keeper.Keeper, msg types.MsgEditParticipant) (*sdk.Result, error) {
 	k.EditParticipant(ctx, msg.ID, msg.Creator, msg.Action)
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeUpdateGame,
+			sdk.NewAttribute(types.AttributeKeyGameID, msg.ID),
+		),
+	)
 	return &sdk.Result{Events: ctx.EventManager().Events()}, nil
 }

@@ -97,16 +97,37 @@ func (k Keeper) RevealResult(ctx sdk.Context, id string) {
   //Todo: distribute money to winner
   winner, ratio := helper.Winner(v)
   for _, e := range game.Bet[len(game.ResultHash ) - 1] {
+    reward, _ := strconv.Atoi(e.Amount.AmountOf("token").String())
     if e.Side == winner {
-      reward, _ := strconv.Atoi(e.Amount.AmountOf("token").String())
       coins, _ := sdk.ParseCoins(strconv.Itoa(reward * ratio) + "token")
       moduleAcct := sdk.AccAddress(crypto.AddressHash([]byte(types.ModuleName)))
       sdkError := k.CoinKeeper.SendCoins(ctx, moduleAcct, e.Creator, coins)
       if sdkError != nil {
         return
       }
-
-
+      ctx.EventManager().EmitEvent(
+        sdk.NewEvent(
+          types.EventTypeRevealResult,
+          sdk.NewAttribute(types.AttributeKeyGameID, id),
+          sdk.NewAttribute(types.AttributeKeyWinner, string(winner)),
+          sdk.NewAttribute(types.AttributeKeyAddress, e.Creator.String()),
+          sdk.NewAttribute(types.AttributeKeyReward, strconv.Itoa(reward * ratio - reward)),
+          sdk.NewAttribute(types.AttributeKeyBetSide, string(e.Side)),
+          sdk.NewAttribute(types.AttributeKeyCard, string(v)),
+        ),
+      )
+    } else {
+      ctx.EventManager().EmitEvent(
+        sdk.NewEvent(
+          types.EventTypeRevealResult,
+          sdk.NewAttribute(types.AttributeKeyGameID, id),
+          sdk.NewAttribute(types.AttributeKeyWinner, string(winner)),
+          sdk.NewAttribute(types.AttributeKeyAddress, e.Creator.String()),
+          sdk.NewAttribute(types.AttributeKeyReward, strconv.Itoa(-reward)),
+          sdk.NewAttribute(types.AttributeKeyBetSide, string(e.Side)),
+          sdk.NewAttribute(types.AttributeKeyCard, string(v)),
+        ),
+      )
     }
   }
 	value := k.cdc.MustMarshalBinaryLengthPrefixed(game)

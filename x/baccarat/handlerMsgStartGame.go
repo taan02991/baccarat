@@ -19,5 +19,13 @@ func handleMsgStartGame(ctx sdk.Context, k keeper.Keeper, msg types.MsgStartGame
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "You're not host of this room")
 	}
 	k.StartGame(ctx, msg.ID)
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeUpdateGame,
+			sdk.NewAttribute(types.AttributeKeyGameID, msg.ID),
+		),
+	)
+
 	return &sdk.Result{Events: ctx.EventManager().Events()}, nil
 }
