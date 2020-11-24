@@ -2,12 +2,13 @@ package keeper
 
 import (
 	"fmt"
+	"strconv"
+
 	"github.com/blockchain/baccarat/x/baccarat/helper"
 	"github.com/blockchain/baccarat/x/baccarat/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/tendermint/tendermint/crypto"
-	"strconv"
 )
 
 func (k Keeper) CreateGame(ctx sdk.Context, game types.Game) {
@@ -81,6 +82,9 @@ func (k Keeper) EditParticipant(ctx sdk.Context, id string, creator sdk.AccAddre
 	}
 	value := k.cdc.MustMarshalBinaryLengthPrefixed(game)
 	store.Set(key, value)
+}
+func (k Keeper) joinGame(ctx sdk.Context, id string) {
+	return
 }
 
 func (k Keeper) RevealResult(ctx sdk.Context, id string) {

@@ -5,10 +5,10 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/blockchain/baccarat/x/baccarat/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/codec"
-	"github.com/blockchain/baccarat/x/baccarat/types"
 )
 
 // GetTxCmd returns the transaction commands for this module
@@ -22,12 +22,9 @@ func GetTxCmd(cdc *codec.Codec) *cobra.Command {
 	}
 
 	baccaratTxCmd.AddCommand(flags.PostCommands(
-    // this line is used by starport scaffolding
+		// this line is used by starport scaffolding
 		GetCmdCreateGame(cdc),
-<<<<<<< HEAD
-=======
 		GetCmdCreateUser(cdc),
->>>>>>> bcf50511433ee7e1c80c53bd95832d37d7057b95
 	)...)
 
 	return baccaratTxCmd

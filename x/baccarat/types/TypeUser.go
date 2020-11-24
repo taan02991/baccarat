@@ -7,6 +7,6 @@ import (
 type User struct {
 	Creator sdk.AccAddress `json:"creator" yaml:"creator"`
 	ID      string         `json:"id" yaml:"id"`
-	Name string `json:"name" yaml:"name"`
-	Addr sdk.AccAddress `json:"addr" yaml:"addr"`
+	Name    string         `json:"name" yaml:"name"`
+	Addr    sdk.AccAddress `json:"addr" yaml:"addr"`
 }

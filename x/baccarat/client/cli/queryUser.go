@@ -3,10 +3,10 @@ package cli
 import (
 	"fmt"
 
+	"github.com/blockchain/baccarat/x/baccarat/types"
 	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/spf13/cobra"
-  "github.com/blockchain/baccarat/x/baccarat/types"
 )
 
 func GetCmdListUser(queryRoute string, cdc *codec.Codec) *cobra.Command {

@@ -17,7 +17,7 @@ func handleMsgJoinGame(ctx sdk.Context, k keeper.Keeper, msg types.MsgCreateGame
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Room is full!")
 	}
 	game.Participant = append(game.Participant, msg.Creator)
-	k.SetGame(ctx, game)
+	k.joinGame(ctx, game)
 
 	return &sdk.Result{Events: ctx.EventManager().Events()}, nil
 }

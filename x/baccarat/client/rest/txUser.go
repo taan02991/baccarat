@@ -3,19 +3,18 @@ package rest
 import (
 	"net/http"
 
+	"github.com/blockchain/baccarat/x/baccarat/types"
 	"github.com/cosmos/cosmos-sdk/client/context"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/rest"
 	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/blockchain/baccarat/x/baccarat/types"
 )
 
 type createUserRequest struct {
 	BaseReq rest.BaseReq `json:"base_req"`
-	Creator string `json:"creator"`
-	Name string `json:"name"`
-	Addr string `json:"addr"`
-	
+	Creator string       `json:"creator"`
+	Name    string       `json:"name"`
+	Addr    string       `json:"addr"`
 }
 
 func createUserHandler(cliCtx context.CLIContext) http.HandlerFunc {
@@ -39,7 +38,7 @@ func createUserHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
 		}
-		msg := types.NewMsgCreateUser(creator,  req.Name, addr, )
+		msg := types.NewMsgCreateUser(creator, req.Name, addr)
 		utils.WriteGenerateStdTxResponse(w, cliCtx, baseReq, []sdk.Msg{msg})
 	}
 }

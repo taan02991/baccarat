@@ -1,12 +1,12 @@
 package helper
 
 import (
-	"math/rand"
-	"time"
-	"strings"
 	"github.com/blockchain/baccarat/x/baccarat/types"
-	"strconv"
 	"math"
+	"math/rand"
+	"strconv"
+	"strings"
+	"time"
 )
 
 func DrawCard(deck string) (string, string) {
@@ -18,10 +18,10 @@ func DrawCard(deck string) (string, string) {
 func GenerateDeck() string {
 	suites := []string{"S", "H", "D", "C"}
 	values := []string{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"}
-	deck :=  make([]string, 0, 52)
+	deck := make([]string, 0, 52)
 	for _, suite := range suites {
 		for _, value := range values {
-			deck = append(deck, value + suite)
+			deck = append(deck, value+suite)
 		}
 	}
 	return strings.Join(Shuffle(deck), ",")
@@ -41,12 +41,12 @@ func Winner(hand string) (types.BetSide, int) {
 	pb := strings.Split(hand, ";")
 	player := strings.Split(pb[0], ",")
 	banker := strings.Split(pb[1], ",")
-	p1, _ := strconv.Atoi(player[0][:len(player[0]) - 1])
-	p2, _ := strconv.Atoi(player[1][:len(player[1]) - 1])
-	b1, _ := strconv.Atoi(banker[0][:len(banker[0]) - 1])
-	b2, _ := strconv.Atoi(banker[1][:len(banker[1]) - 1])
-	distPlayer := math.Abs(9 - float64(p1 + p2))
-	distBanker :=  math.Abs(9 - float64(b1 + b2))
+	p1, _ := strconv.Atoi(player[0][:len(player[0])-1])
+	p2, _ := strconv.Atoi(player[1][:len(player[1])-1])
+	b1, _ := strconv.Atoi(banker[0][:len(banker[0])-1])
+	b2, _ := strconv.Atoi(banker[1][:len(banker[1])-1])
+	distPlayer := math.Abs(9 - float64(p1+p2))
+	distBanker := math.Abs(9 - float64(b1+b2))
 	if distPlayer == distBanker {
 		return types.Tie, 5
 	} else if distPlayer < distBanker {
@@ -55,5 +55,3 @@ func Winner(hand string) (types.BetSide, int) {
 		return types.Banker, 2
 	}
 }
-
-

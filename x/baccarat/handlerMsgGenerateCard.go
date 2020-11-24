@@ -13,8 +13,8 @@ func handleMsgGenerateCard(ctx sdk.Context, k keeper.Keeper, msg types.MsgCreate
 		Participant: []sdk.AccAddress{
 			msg.Creator,
 		},
-		State:      0,
-		Result:     []types.Card{},
+		State:      types.Waiting,
+		Result:     []string{},
 		ResultHash: []string{},
 	}
 	k.CreateGame(ctx, game)

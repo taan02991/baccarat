@@ -29,13 +29,10 @@ func GetQueryCmd(queryRoute string, cdc *codec.Codec) *cobra.Command {
 
 	baccaratQueryCmd.AddCommand(
 		flags.GetCommands(
-      // this line is used by starport scaffolding
+			// this line is used by starport scaffolding
 			GetCmdListGame(queryRoute, cdc),
-<<<<<<< HEAD
-=======
 			GetCmdListUser(queryRoute, cdc),
 			GetCmdGetUser(queryRoute, cdc),
->>>>>>> bcf50511433ee7e1c80c53bd95832d37d7057b95
 		)...,
 	)
 

@@ -15,13 +15,9 @@ const (
 )
 
 const (
-<<<<<<< HEAD
-=======
 	UserPrefix = "user-"
 )
-		
+
 const (
->>>>>>> bcf50511433ee7e1c80c53bd95832d37d7057b95
 	GamePrefix = "game-"
 )
-		

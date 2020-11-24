@@ -3,25 +3,16 @@ package rest
 import (
 	"net/http"
 
+	"github.com/blockchain/baccarat/x/baccarat/types"
 	"github.com/cosmos/cosmos-sdk/client/context"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/rest"
 	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/blockchain/baccarat/x/baccarat/types"
 )
 
 type createGameRequest struct {
 	BaseReq rest.BaseReq `json:"base_req"`
-	Creator string `json:"creator"`
-<<<<<<< HEAD
-	RoomNo string `json:"roomNo"`
-	Round string `json:"round"`
-	Participant string `json:"participant"`
-	Result string `json:"result"`
-	ResultHash string `json:"resultHash"`
-	
-=======
->>>>>>> bcf50511433ee7e1c80c53bd95832d37d7057b95
+	Creator string       `json:"creator"`
 }
 
 func createGameHandler(cliCtx context.CLIContext) http.HandlerFunc {
@@ -40,9 +31,6 @@ func createGameHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
 		}
-<<<<<<< HEAD
-		msg := types.NewMsgCreateGame(creator,  req.RoomNo,  req.Round,  req.Participant,  req.Result,  req.ResultHash, )
-=======
 		msg := types.NewMsgCreateGame(creator)
 		utils.WriteGenerateStdTxResponse(w, cliCtx, baseReq, []sdk.Msg{msg})
 	}
@@ -50,8 +38,8 @@ func createGameHandler(cliCtx context.CLIContext) http.HandlerFunc {
 
 type startGameRequest struct {
 	BaseReq rest.BaseReq `json:"base_req"`
-	Creator string `json:"creator"`
-	ID string `json:"id"`
+	Creator string       `json:"creator"`
+	ID      string       `json:"id"`
 }
 
 func startGameHandler(cliCtx context.CLIContext) http.HandlerFunc {
@@ -70,17 +58,17 @@ func startGameHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
 		}
-		msg := types.NewMsgStartGame(creator,  req.ID,)
+		msg := types.NewMsgStartGame(creator, req.ID)
 		utils.WriteGenerateStdTxResponse(w, cliCtx, baseReq, []sdk.Msg{msg})
 	}
 }
 
 type betRequest struct {
-	BaseReq 	rest.BaseReq 	  `json:"base_req"`
-	Creator     string   		  `json:"creator" yaml:"creator"`
-	ID          string            `json:"id" yaml:"id"`
-	Side    	types.BetSide	  `json:"side" yaml:"side"`
-	Amount		string			  `json:"amount" yaml:"amount"`
+	BaseReq rest.BaseReq  `json:"base_req"`
+	Creator string        `json:"creator" yaml:"creator"`
+	ID      string        `json:"id" yaml:"id"`
+	Side    types.BetSide `json:"side" yaml:"side"`
+	Amount  string        `json:"amount" yaml:"amount"`
 }
 
 func betHandler(cliCtx context.CLIContext) http.HandlerFunc {
@@ -104,16 +92,16 @@ func betHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, "failed to parse coin")
 			return
 		}
-		msg := types.NewMsgBet(creator,  req.ID, req.Side, coins,)
+		msg := types.NewMsgBet(creator, req.ID, req.Side, coins)
 		utils.WriteGenerateStdTxResponse(w, cliCtx, baseReq, []sdk.Msg{msg})
 	}
 }
 
 type editParticipantRequest struct {
-	BaseReq rest.BaseReq 			`json:"base_req"`
-	Creator string 					`json:"creator"`
-	ID 		string 					`json:"id"`
-	Action 	types.ParticipantAction `json:"action"`
+	BaseReq rest.BaseReq            `json:"base_req"`
+	Creator string                  `json:"creator"`
+	ID      string                  `json:"id"`
+	Action  types.ParticipantAction `json:"action"`
 }
 
 func editParticipantHandler(cliCtx context.CLIContext) http.HandlerFunc {
@@ -132,8 +120,7 @@ func editParticipantHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
 		}
-		msg := types.NewMsgEditParticipant(creator,  req.ID, req.Action, )
->>>>>>> bcf50511433ee7e1c80c53bd95832d37d7057b95
+		msg := types.NewMsgEditParticipant(creator, req.ID, req.Action)
 		utils.WriteGenerateStdTxResponse(w, cliCtx, baseReq, []sdk.Msg{msg})
 	}
 }

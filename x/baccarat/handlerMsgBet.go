@@ -1,18 +1,18 @@
 package baccarat
 
 import (
+	"github.com/blockchain/baccarat/x/baccarat/keeper"
+	"github.com/blockchain/baccarat/x/baccarat/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/blockchain/baccarat/x/baccarat/types"
-	"github.com/blockchain/baccarat/x/baccarat/keeper"
 	"github.com/tendermint/tendermint/crypto"
 )
 
 func handleMsgBet(ctx sdk.Context, k keeper.Keeper, msg types.MsgBet) (*sdk.Result, error) {
 	var bet = types.Bet{
-		Creator:	msg.Creator,
-		Side:		msg.Side,
-		Amount:		msg.Amount,
+		Creator: msg.Creator,
+		Side:    msg.Side,
+		Amount:  msg.Amount,
 	}
 	game, err := k.GetGame(ctx, msg.ID)
 	if err != nil {
@@ -21,7 +21,7 @@ func handleMsgBet(ctx sdk.Context, k keeper.Keeper, msg types.MsgBet) (*sdk.Resu
 	if game.State != types.Playing {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "Game is not Playing")
 	}
-	for _, e := range game.Bet[len(game.ResultHash) - 1] {
+	for _, e := range game.Bet[len(game.ResultHash)-1] {
 		if e.Creator.Equals(bet.Creator) {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "You already bet")
 		}
@@ -42,7 +42,7 @@ func handleMsgBet(ctx sdk.Context, k keeper.Keeper, msg types.MsgBet) (*sdk.Resu
 	var isAllBet = true
 	for _, p := range game.Participant {
 		var isBet = false
-		for _, e := range game.Bet[len(game.ResultHash) - 1] {
+		for _, e := range game.Bet[len(game.ResultHash)-1] {
 			if e.Creator.Equals(p) {
 				isBet = true
 				break

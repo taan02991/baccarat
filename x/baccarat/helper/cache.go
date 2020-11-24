@@ -20,7 +20,7 @@ func SetCache(key string, value string) bool {
 		fmt.Println("Couldn't set cache: \n%w\n", err.Error())
 		return false
 	}
-    return true
+	return true
 }
 
 func GetCache(key string) (string, bool) {
@@ -29,5 +29,5 @@ func GetCache(key string) (string, bool) {
 		fmt.Println("Couldn't get cache: \n%w\n", err.Error())
 		return string(entry), false
 	}
-    return string(entry), true
+	return string(entry), true
 }

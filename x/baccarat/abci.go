@@ -1,9 +1,9 @@
 package baccarat
 
 import (
+	"github.com/blockchain/baccarat/x/baccarat/keeper"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	abci "github.com/tendermint/tendermint/abci/types"
-	"github.com/blockchain/baccarat/x/baccarat/keeper"
 	// abci "github.com/tendermint/tendermint/abci/types"
 )
 
