@@ -23,6 +23,7 @@ func GetTxCmd(cdc *codec.Codec) *cobra.Command {
 
 	baccaratTxCmd.AddCommand(flags.PostCommands(
     // this line is used by starport scaffolding
+		GetCmdCreateGame(cdc),
 	)...)
 
 	return baccaratTxCmd
