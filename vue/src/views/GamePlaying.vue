@@ -10,6 +10,7 @@
         <button
           type="button"
           class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+          @click="onLeave"
         >
           Quit Room
         </button>
@@ -81,6 +82,7 @@
       </div>
       <div class="w-2/5 text-right" v-if="game.state == 'Waiting'">
         <button
+          @click="onStart"
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded w-4/5"
         >
           Start
@@ -151,17 +153,7 @@ export default {
     };
   },
   async mounted() {
-    await this.$store.dispatch("entitySubmit", {
-      type: "game/participant",
-      body: {
-        id: this.$route.params.id,
-        action: "Join"
-      }
-    });
-
-    await axios.get(`/baccarat/game/${this.$route.params.id}`).then(res => {
-      this.game = res.data.result;
-    });
+    this.initConnection(10);
   },
   computed: {
     account() {
@@ -185,6 +177,28 @@ export default {
     }
   },
   methods: {
+    async initConnection(n) {
+      axios
+        .get(`/baccarat/game/${this.$route.params.id}`)
+        .then(res => {
+          this.game = res.data.result;
+          this.$store.dispatch("entitySubmit", {
+            type: "game/participant",
+            body: {
+              id: this.$route.params.id,
+              action: "Join"
+            }
+          });
+        })
+        .catch(async error => {
+          if (n == 1) throw error;
+          const sleep = () => {
+            return new Promise(resolve => setTimeout(resolve, 3000));
+          };
+          await sleep();
+          this.initConnection(n - 1);
+        });
+    },
     async onLeave() {
       await this.$store.dispatch("entitySubmit", {
         type: "game/participant",
@@ -193,6 +207,16 @@ export default {
           action: "Leave"
         }
       });
+      this.$router.push("/");
+    },
+    async onStart() {
+      await this.$store.dispatch("entitySubmit", {
+        type: "game/start",
+        body: {
+          id: this.$route.params.id
+        }
+      });
+      await this.$store.dispatch("entityFetch", { type: "game"})
     }
   }
 };

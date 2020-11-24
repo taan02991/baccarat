@@ -128,7 +128,8 @@ export default new Vuex.Store({
       const req = { base_req, creator, ...body };
       const { data } = await axios.post(`/${chain_id}/${type}`, req);
       const { msg, fee, memo } = data.value;
-      return await state.client.signAndPost(msg, fee, memo);
+      state.client.signAndPost(msg, fee, memo);
+      return data.value.msg[0];
     }
   }
 });
