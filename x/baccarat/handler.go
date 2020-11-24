@@ -17,6 +17,17 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
     // this line is used by starport scaffolding
 		case types.MsgCreateGame:
 			return handleMsgCreateGame(ctx, k, msg)
+<<<<<<< HEAD
+=======
+		case types.MsgStartGame:
+			return handleMsgStartGame(ctx, k, msg)
+		case types.MsgBet:
+			return handleMsgBet(ctx, k, msg)
+		case types.MsgEditParticipant:
+			return handleMsgEditParticipant(ctx, k, msg)
+		case types.MsgCreateUser:
+			return handleMsgCreateUser(ctx, k, msg)
+>>>>>>> bcf50511433ee7e1c80c53bd95832d37d7057b95
 		default:
 			errMsg := fmt.Sprintf("unrecognized %s message type: %T", types.ModuleName, msg)
 			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)

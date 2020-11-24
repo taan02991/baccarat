@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 import app from "./app.js";
+import * as bip39 from "bip39";
 import {
   Secp256k1Wallet,
   SigningCosmosClient,
@@ -72,6 +73,34 @@ export default new Vuex.Store({
           });
         });
       });
+    },
+    async accountRegister({ state, commit }, name) {
+      const mnemonic = bip39.generateMnemonic();
+      const wallet = await Secp256k1Wallet.fromMnemonic(
+        mnemonic,
+        makeCosmoshubPath(0),
+        ADDRESS_PREFIX
+      );
+      const [{ address }] = await wallet.getAccounts();
+      const body = {
+        name: name,
+        addr: address
+      };
+      const fundingWallet = await Secp256k1Wallet.fromMnemonic(
+        process.env.VUE_APP_FUNDING_ACCOUNT,
+        makeCosmoshubPath(0),
+        ADDRESS_PREFIX
+      );
+      const fundingAddr = (await fundingWallet.getAccounts())[0].address;
+      const client = new SigningCosmosClient(API, fundingAddr, fundingWallet);
+      const { chain_id } = state;
+      const creator = client.senderAddress;
+      const base_req = { chain_id, from: creator };
+      const req = { base_req, creator, ...body };
+      const { data } = await axios.post(`${API}/${chain_id}/user`, req);
+      const { msg, fee, memo } = data.value;
+      await client.signAndPost(msg, fee, memo);
+      return mnemonic;
     },
     async entityFetch({ state, commit }, { type }) {
       const { chain_id } = state;
