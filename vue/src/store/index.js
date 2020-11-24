@@ -45,9 +45,8 @@ export default new Vuex.Store({
   actions: {
     async init({ dispatch, state }) {
       await dispatch("chainIdFetch");
-      state.app.types.forEach(({ type }) => {
-        dispatch("entityFetch", { type });
-      });
+      dispatch("entityFetch", { type: "game" });
+      dispatch("entityFetch", { type: "user" });
     },
     async chainIdFetch({ commit }) {
       const node_info = (await axios.get(`/node_info`)).data.node_info;
