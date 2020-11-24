@@ -11,7 +11,7 @@ import {
 
 Vue.use(Vuex);
 
-const API = "http://localhost:1317";
+const API = process.env.VUE_APP_API;
 const ADDRESS_PREFIX = "cosmos";
 
 export default new Vuex.Store({
@@ -50,7 +50,7 @@ export default new Vuex.Store({
       });
     },
     async chainIdFetch({ commit }) {
-      const node_info = (await axios.get(`${API}/node_info`)).data.node_info;
+      const node_info = (await axios.get(`/node_info`)).data.node_info;
       commit("chainIdSet", { chain_id: node_info.network });
     },
     async accountSignIn({ commit }, { mnemonic }) {
@@ -61,7 +61,7 @@ export default new Vuex.Store({
           ADDRESS_PREFIX
         ).then(wallet => {
           wallet.getAccounts().then(([{ address }]) => {
-            const url = `${API}/auth/accounts/${address}`;
+            const url = `/auth/accounts/${address}`;
             axios.get(url).then(res => {
               const acc = res.data;
               if (acc.result.value.address === address) {
@@ -69,7 +69,7 @@ export default new Vuex.Store({
                 const client = new SigningCosmosClient(API, address, wallet);
                 commit("accountUpdate", { account });
                 commit("clientUpdate", { client });
-                axios.get(`${API}/baccarat/user/${address}`).then(res => {
+                axios.get(`/baccarat/user/${address}`).then(res => {
                   commit("setName", res.data.result.name);
                 });
                 resolve(account);
@@ -104,19 +104,19 @@ export default new Vuex.Store({
       const creator = client.senderAddress;
       const base_req = { chain_id, from: creator };
       const req = { base_req, creator, ...body };
-      const { data } = await axios.post(`${API}/${chain_id}/user`, req);
+      const { data } = await axios.post(`/${chain_id}/user`, req);
       const { msg, fee, memo } = data.value;
       await client.signAndPost(msg, fee, memo);
       return mnemonic;
     },
     async entityFetch({ state, commit }, { type }) {
       const { chain_id } = state;
-      const url = `${API}/${chain_id}/${type}`;
+      const url = `/${chain_id}/${type}`;
       const body = (await axios.get(url)).data.result;
       commit("entitySet", { type, body });
     },
     async accountUpdate({ state, commit }) {
-      const url = `${API}/auth/accounts/${state.client.senderAddress}`;
+      const url = `/auth/accounts/${state.client.senderAddress}`;
       const acc = (await axios.get(url)).data;
       const account = acc.result.value;
       commit("accountUpdate", { account });
@@ -126,7 +126,7 @@ export default new Vuex.Store({
       const creator = state.client.senderAddress;
       const base_req = { chain_id, from: creator };
       const req = { base_req, creator, ...body };
-      const { data } = await axios.post(`${API}/${chain_id}/${type}`, req);
+      const { data } = await axios.post(`/${chain_id}/${type}`, req);
       const { msg, fee, memo } = data.value;
       return await state.client.signAndPost(msg, fee, memo);
     }
