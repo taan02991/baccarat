@@ -100,36 +100,6 @@
       :bet="resultBet"
       :amount="resultAmount"
     ></Result>
-    <p>Test Animation</p>
-    <button
-      class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-1 rounded"
-      @click="
-        r = '';
-        s = '';
-      "
-    >
-      close card
-    </button>
-    <button
-      class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-1 rounded"
-      @click="
-        r = '1';
-        s = 'S';
-      "
-    >
-      open card
-    </button>
-    <button
-      class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-1 rounded"
-      @click="
-        resultShow = true;
-        resultWinner = 'Player';
-        resultBet = 'Banker';
-        resultAmount = 1000;
-      "
-    >
-      show result
-    </button>
   </div>
 </template>
 
@@ -226,7 +196,6 @@ export default {
               obj[key] = value
             });
             if(obj["address"] === this.address) {
-              console.log(obj)
               this.resultWinner = obj["winner"]
               this.resultAmount = obj["reward"]
               this.resultBet = obj["betSide"]
