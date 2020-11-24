@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"crypto/sha256"
 	"fmt"
 	"strconv"
 
@@ -32,7 +33,9 @@ func (k Keeper) StartGame(ctx sdk.Context, id string) {
 	hand, deck := helper.DrawCard(deck)
 	helper.SetCache(id+"-deck", deck)
 	helper.SetCache(id, hand)
-	game.ResultHash = append(game.ResultHash, "XXX")
+	// Hash
+	handHashed := sha256.Sum256([]byte(hand))
+	game.ResultHash = append(game.ResultHash, string(handHashed[:]))
 	value := k.cdc.MustMarshalBinaryLengthPrefixed(game)
 	store.Set(key, value)
 }
@@ -150,7 +153,8 @@ func (k Keeper) AppendResultHash(ctx sdk.Context, id string) {
 	helper.SetCache(id+"-deck", deck)
 	helper.SetCache(id, hand)
 	//Edit here
-	game.ResultHash = append(game.ResultHash, "XXX")
+	handHashed := sha256.Sum256([]byte(hand))
+	game.ResultHash = append(game.ResultHash, string(handHashed[:]))
 	value := k.cdc.MustMarshalBinaryLengthPrefixed(game)
 	store.Set(key, value)
 }
