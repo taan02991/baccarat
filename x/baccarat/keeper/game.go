@@ -170,3 +170,15 @@ func listGame(ctx sdk.Context, k Keeper) ([]byte, error) {
   res := codec.MustMarshalJSONIndent(k.cdc, gameList)
   return res, nil
 }
+
+func getGame(ctx sdk.Context, k Keeper, id string) ([]byte, error) {
+  game, err := k.GetGame(ctx, id)
+  if err != nil {
+    return nil, err
+  }
+  res, err := codec.MarshalJSONIndent(k.cdc, game)
+  if err != nil {
+		return nil, err
+	}
+  return res, nil
+}

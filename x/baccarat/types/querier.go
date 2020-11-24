@@ -7,5 +7,8 @@ const (
 )
 
 		
-const (QueryListGame = "list-game")
+const (
+	QueryListGame = "list-game"
+	QueryGetGame = "get-game"
+)
 		
