@@ -19,6 +19,8 @@ func NewQuerier(k Keeper) sdk.Querier {
     // this line is used by starport scaffolding # 2
 		case types.QueryListGame:
 			return listGame(ctx, k)
+		case types.QueryGetGame:
+			return getGame(ctx, k, path[1])
 		case types.QueryListUser:
 			return listUser(ctx, k)
 		case types.QueryGetUser:
