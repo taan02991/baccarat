@@ -106,7 +106,6 @@ func (AppModule) Route() string {
 
 // NewHandler returns an sdk.Handler for the baccarat module.
 func (am AppModule) NewHandler() sdk.Handler {
-
 	// var wg sync.WaitGroup
 	return NewHandler(am.keeper)
 }

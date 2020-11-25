@@ -5,16 +5,15 @@ import (
 )
 
 type Game struct {
-	Creator      sdk.AccAddress   `json:"creator" yaml:"creator"`
-	ID           string           `json:"id" yaml:"id"`
-	State        StateType        `json:"state" yaml:"state"`
-	Participant  []sdk.AccAddress `json:"participant" yaml:"participant"`
-	Result       []string         `json:"result" yaml:"result"`
-	ResultHash   []string         `json:"resultHash" yaml:"resultHash"`
-	Bet          [][]Bet          `json:"bet" yaml:"bet"`
-	CurrentTime  []int64          `json:"current_time" yaml:"current_time"`
-	StartingTime []int64          `json:"start_time" yaml:"start_time"`
-	BettingTime  []int64          `json:"bet_time" yaml:"bet_time"`
+	Creator     sdk.AccAddress   `json:"creator" yaml:"creator"`
+	ID          string           `json:"id" yaml:"id"`
+	State       StateType        `json:"state" yaml:"state"`
+	Participant []sdk.AccAddress `json:"participant" yaml:"participant"`
+	Result      []string         `json:"result" yaml:"result"`
+	ResultHash  []string         `json:"resultHash" yaml:"resultHash"`
+	Bet         [][]Bet          `json:"bet" yaml:"bet"`
+	CurrentTime []int64          `json:"current_time" yaml:"current_time"`
+	BettingTime []int64          `json:"bet_time" yaml:"bet_time"`
 }
 
 type Bet struct {
