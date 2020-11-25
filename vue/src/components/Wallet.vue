@@ -1,7 +1,48 @@
 <template>
   <div>
     <div class="container">
-      <div class="h1">{{ address ? "Your Account" : "Sign in" }}</div>
+      <div class="h1">Register</div>
+      <div v-if="!newMnemonic" class="password">
+        <input
+          type="text"
+          v-model="name"
+          class="password__input"
+          placeholder="Your name"
+        />
+        <div
+          :class="[
+            'button',
+            `button__error__${!!error}`
+          ]"
+          @click="register"
+        >
+          Register
+        </div>
+      </div>
+      <div v-else>
+        <div class="card">
+          <div class="card__row">
+            <div class="card__icon">
+              <icon-user />
+            </div>
+            <div class="card__desc">
+              {{ name }}
+            </div>
+          </div>
+          <div v-if="newMnemonic" class="card__row">
+            <span>
+              Your mnemonic is 
+              <span
+                class="coin__amount"
+                :style="{ 'text-transform': 'none' }"
+                >{{ newMnemonic }}</span
+              >
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="h1 pt-6">{{ address ? "Your Account" : "Sign in" }}</div>
       <div v-if="!address" class="password">
         <input
           type="text"
@@ -187,8 +228,10 @@ export default {
   },
   data() {
     return {
+      name: "",
       password: "",
-      error: false
+      error: false,
+      newMnemonic: "",
     };
   },
   computed: {
@@ -217,6 +260,18 @@ export default {
             this.error = false;
           }, 1000);
         });
+      }
+    },
+    async register() {
+      if (!this.error) {
+        try {
+          this.newMnemonic = await this.$store.dispatch("accountRegister", name);
+        } catch {
+          this.error = true;
+          setTimeout(() => {
+            this.error = false
+          }, 1000);
+        }
       }
     }
   }
