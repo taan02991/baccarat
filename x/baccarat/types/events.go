@@ -13,6 +13,7 @@ const (
 	AttributeKeyReward  		= "reward"
 	AttributeKeyBetSide			= "betSide"
 	AttributeKeyCard			= "card"
+	AttributeKeyResultHash		= "resultHash"
 
 	// TODO: Some events may not have values for that reason you want to emit that something happened.
 	// AttributeValueDoubleSign = "double_sign"

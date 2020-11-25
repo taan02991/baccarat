@@ -101,7 +101,6 @@ func (k Keeper) RevealResult(ctx sdk.Context, id string) {
   }
   v, _ := helper.GetCache(id)
   game.Result = append(game.Result, v)
-  //Todo: distribute money to winner
   winner, ratio := helper.Winner(v)
   for _, e := range game.Bet[len(game.ResultHash ) - 1] {
     reward, _ := strconv.Atoi(e.Amount.AmountOf("token").String())
@@ -121,6 +120,7 @@ func (k Keeper) RevealResult(ctx sdk.Context, id string) {
           sdk.NewAttribute(types.AttributeKeyReward, strconv.Itoa(reward * ratio - reward)),
           sdk.NewAttribute(types.AttributeKeyBetSide, string(e.Side)),
           sdk.NewAttribute(types.AttributeKeyCard, string(v)),
+          sdk.NewAttribute(types.AttributeKeyResultHash, game.ResultHash[len(game.ResultHash) - 1]),
         ),
       )
     } else {
@@ -133,6 +133,7 @@ func (k Keeper) RevealResult(ctx sdk.Context, id string) {
           sdk.NewAttribute(types.AttributeKeyReward, strconv.Itoa(-reward)),
           sdk.NewAttribute(types.AttributeKeyBetSide, string(e.Side)),
           sdk.NewAttribute(types.AttributeKeyCard, string(v)),
+          sdk.NewAttribute(types.AttributeKeyResultHash, game.ResultHash[len(game.ResultHash) - 1]),
         ),
       )
     }

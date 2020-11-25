@@ -30,6 +30,7 @@
                 <p class="text text-gray-700">Winning Side: {{ winner }}</p>
                 <p class="text text-gray-700 mt-2">Your Bet: {{ bet }}</p>
                 <p class="text text-gray-700 mt-2">Reward: {{ amount }}</p>
+                <p class="text text-gray-700 mt-2">Result Hash: {{ resulthash }}</p>
               </div>
             </div>
           </div>
@@ -50,6 +51,6 @@
 
 <script>
 export default {
-  props: ["show", "winner", "bet", "amount"]
+  props: ["show", "winner", "bet", "amount", "resulthash"]
 };
 </script>
