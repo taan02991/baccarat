@@ -6,14 +6,14 @@
     </button>
     <table v-if="game.length > 0" class="table-fixed w-full mt-6">
       <thead>
-        <tr class="border-2 border-gray-500">
+        <tr class="border-2 border-gray-700">
           <th class="w-1/3 p-2"># round</th>
           <th class="w-1/3 p-2"># participants</th>
           <th class="w-1/3 p-2"></th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="g in game" :key="g.id" class="border-2 border-gray-500">
+        <tr v-for="g in game" :key="g.id" class="border-2 border-gray-700">
           <td class="text-center">{{ (g.result || []).length + 1 }}</td>
           <td class="text-center">{{ g.participant.length }}</td>
           <td class="flex justify-center">
@@ -82,7 +82,6 @@ export default {
       console.log(res.value.id);
       this.$router.push(`game/${res.value.id}`);
     }
-  },
+  }
 };
 </script>
-
