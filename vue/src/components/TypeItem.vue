@@ -55,7 +55,7 @@ button {
   align-items: center;
 }
 .item {
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
   margin-bottom: 1rem;
   padding: 1rem;
   border-radius: 0.5rem;
@@ -69,7 +69,7 @@ button {
   word-break: break-all;
 }
 .item__field__key {
-  color: rgba(0, 0, 0, 0.25);
+  color: rgba(255, 255, 255, 0.25);
   word-break: keep-all;
   overflow: hidden;
 }
@@ -88,23 +88,23 @@ button:focus {
   height: 1em;
   width: 1em;
   margin: 0 0.5em 0 0.5em;
-  fill: rgba(0, 0, 0, 0.25);
+  fill: rgba(255, 255, 255, 0.25);
   animation: rotate linear 4s infinite;
 }
 .button.button__valid__false {
-  color: rgba(0, 0, 0, 0.25);
+  color: rgba(255, 255, 255, 0.25);
   cursor: not-allowed;
 }
 .card__empty {
   margin-bottom: 1rem;
-  border: 1px dashed rgba(0, 0, 0, 0.1);
+  border: 1px dashed rgba(255, 255, 255, 0.1);
   padding: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
   border-radius: 8px;
-  color: rgba(0, 0, 0, 0.25);
+  color: rgba(255, 255, 255, 0.25);
   text-align: center;
   min-height: 8rem;
 }
