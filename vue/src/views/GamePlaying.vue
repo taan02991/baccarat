@@ -173,7 +173,7 @@ export default {
           });
         })
         .catch(async error => {
-          if (n == 1) throw error;
+          if (n === 1) throw error;
           const sleep = () => {
             return new Promise(resolve => setTimeout(resolve, 3000));
           };
@@ -196,7 +196,7 @@ export default {
         data => {
           data.TxResult.result.events.forEach(e => {
             let obj = {};
-            if (e.type == "revealResult") {
+            if (e.type === "revealResult") {
               e.attributes.forEach(element => {
                 let key = atob(element.key);
                 let value = atob(element.value);
