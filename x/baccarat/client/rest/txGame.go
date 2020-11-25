@@ -104,7 +104,7 @@ func betHandler(cliCtx context.CLIContext) http.HandlerFunc {
 	}
 }
 
-type betcheckingRequest struct {
+type betCheckingRequest struct {
 	BaseReq rest.BaseReq `json:"base_req"`
 	Creator string       `json:"creator" yaml:"creator"`
 	ID      string       `json:"id" yaml:"id"`
@@ -112,7 +112,7 @@ type betcheckingRequest struct {
 
 func betCheckingHandler(cliCtx context.CLIContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req betRequest
+		var req betCheckingRequest
 		if !rest.ReadRESTReq(w, r, cliCtx.Codec, &req) {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, "failed to parse request")
 			return
