@@ -62,7 +62,7 @@ func startGameHandler(cliCtx context.CLIContext) http.HandlerFunc {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
 		}
-		time := helper.GetTime("start")
+		time := helper.GetTime("betting")
 		req.CurrentTime = time.CurrentTime
 		req.UpdateTime = time.UpdateTime
 		msg := types.NewMsgStartGame(creator, req.ID, req.CurrentTime, req.UpdateTime)
