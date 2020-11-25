@@ -5,41 +5,43 @@ import (
 )
 
 type Game struct {
-	Creator     sdk.AccAddress    `json:"creator" yaml:"creator"`
-	ID          string            `json:"id" yaml:"id"`
-  State       StateType         `json:"state" yaml:"state"`
-  Participant []sdk.AccAddress  `json:"participant" yaml:"participant"`
-  Result      []string            `json:"result" yaml:"result"`
-  ResultHash  []string            `json:"resultHash" yaml:"resultHash"`
-  Bet         [][]Bet            `json:"bet" yaml:"bet"`
+	Creator      sdk.AccAddress   `json:"creator" yaml:"creator"`
+	ID           string           `json:"id" yaml:"id"`
+	State        StateType        `json:"state" yaml:"state"`
+	Participant  []sdk.AccAddress `json:"participant" yaml:"participant"`
+	Result       []string         `json:"result" yaml:"result"`
+	ResultHash   []string         `json:"resultHash" yaml:"resultHash"`
+	Bet          [][]Bet          `json:"bet" yaml:"bet"`
+	CurrentTime  []int64          `json:"current_time" yaml:"current_time"`
+	StartingTime []int64          `json:"start_time" yaml:"start_time"`
+	BettingTime  []int64          `json:"bet_time" yaml:"bet_time"`
 }
 
 type Bet struct {
-  Creator sdk.AccAddress  `json:"creator" yaml:"creator"`
-  Side    BetSide         `json:"side" yaml:"side"`
-  Amount  sdk.Coins             `json:"amount" yaml:"amount"`
+	Creator sdk.AccAddress `json:"creator" yaml:"creator"`
+	Side    BetSide        `json:"side" yaml:"side"`
+	Amount  sdk.Coins      `json:"amount" yaml:"amount"`
 }
 
 type StateType string
 
 const (
-  Waiting StateType = "Waiting"
-  Playing           = "Playing"
-  End               = "End"
+	Waiting StateType = "Waiting"
+	Playing           = "Playing"
+	End               = "End"
 )
-
 
 type BetSide string
 
 const (
-  Player BetSide = "Player"
-  Banker         = "Banker"
-  Tie            = "Tie"
+	Player BetSide = "Player"
+	Banker         = "Banker"
+	Tie            = "Tie"
 )
 
 type ParticipantAction string
 
 const (
-  Join ParticipantAction  = "Join"
-  Leave                   = "Leave"
+	Join  ParticipantAction = "Join"
+	Leave                   = "Leave"
 )
