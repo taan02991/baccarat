@@ -6,6 +6,7 @@ import (
   "github.com/cosmos/cosmos-sdk/codec"
   sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
   "fmt"
+  abci "github.com/tendermint/tendermint/abci/types"
 )
 
 var INITIAL_AMOUNT, _ = sdk.ParseCoins("1000token")
@@ -51,6 +52,24 @@ func getUser(ctx sdk.Context, k Keeper, path []string) ([]byte, error) {
     return nil, err
 	}
   res, err := codec.MarshalJSONIndent(k.cdc, user)
+  if err != nil {
+    return nil, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
+	}
+	return res, nil
+}
+
+func getUsers(ctx sdk.Context, k Keeper, req abci.RequestQuery) ([]byte, error) {
+  userMap := make(map[string]string)
+  var data types.GetUsersRequest
+  k.cdc.MustUnmarshalJSON(req.Data, &data)
+  for _, addr := range data.Addr {
+    user, err := k.GetUser(ctx, addr)
+    if err != nil {
+      return nil, err
+    }
+    userMap[addr] = user.Name
+  }
+  res, err := codec.MarshalJSONIndent(k.cdc, userMap)
   if err != nil {
     return nil, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
 	}

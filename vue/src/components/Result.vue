@@ -29,7 +29,7 @@
               <div class="mt-4">
                 <p class="text text-gray-700">Winning Side: {{ winner }}</p>
                 <p class="text text-gray-700 mt-2">Your Bet: {{ bet }}</p>
-                <p class="text text-gray-700 mt-2">Amount: {{ amount }}</p>
+                <p class="text text-gray-700 mt-2">Reward: {{ amount }}</p>
               </div>
             </div>
           </div>

@@ -10,3 +10,7 @@ type User struct {
 	Name string `json:"name" yaml:"name"`
 	Addr sdk.AccAddress `json:"addr" yaml:"addr"`
 }
+
+type GetUsersRequest struct {
+	Addr []string `json:"addr"`	
+}

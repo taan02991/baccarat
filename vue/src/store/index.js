@@ -43,7 +43,7 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    async init({ dispatch, state }) {
+    async init({ dispatch }) {
       await dispatch("chainIdFetch");
       dispatch("entityFetch", { type: "game" });
       dispatch("entityFetch", { type: "user" });
@@ -80,7 +80,7 @@ export default new Vuex.Store({
         });
       });
     },
-    async accountRegister({ state, commit }, name) {
+    async accountRegister({ state }, name) {
       const mnemonic = bip39.generateMnemonic();
       const wallet = await Secp256k1Wallet.fromMnemonic(
         mnemonic,
