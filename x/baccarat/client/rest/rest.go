@@ -8,7 +8,8 @@ import (
 
 // RegisterRoutes registers baccarat-related REST handlers to a router
 func RegisterRoutes(cliCtx context.CLIContext, r *mux.Router) {
-  // this line is used by starport scaffolding
+	// this line is used by starport scaffolding
+	r.HandleFunc("/baccarat/betcheching", listGameHandler(cliCtx, "baccarat")).Methods("GET")
 	r.HandleFunc("/baccarat/game", listGameHandler(cliCtx, "baccarat")).Methods("GET")
 	r.HandleFunc("/baccarat/game/{id}", getGameHandler(cliCtx, "baccarat")).Methods("GET")
 	r.HandleFunc("/baccarat/game", createGameHandler(cliCtx)).Methods("POST")
