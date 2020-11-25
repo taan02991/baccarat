@@ -129,7 +129,7 @@ export default {
       resultP2: { r: "", s: "" },
       resultB1: { r: "", s: "" },
       resultB2: { r: "", s: "" },
-      amount: 0,
+      amount: "",
       rpcClient: null
     };
   },
@@ -253,7 +253,7 @@ export default {
           amount: this.amount + "token"
         }
       });
-      this.amount = 0;
+      this.amount = "";
       await this.fetchGame();
       await this.$store.dispatch("accountUpdate");
     },
