@@ -146,7 +146,7 @@ export default {
     await this.initConnection(10);
     await this.initRpcConnection();
     let end = new Date().getTime() + 60 * 1000;
-    this.initTimer(end);
+    this.initTimer();
   },
   computed: {
     account() {
@@ -236,10 +236,18 @@ export default {
         }
       );
     },
-    initTimer(end){
+    initTimer(){
       setInterval( () => {
         let now = new Date().getTime();
-        this.timeRemaining = Math.floor((end - now) / 1000)
+        this.timeRemaining = Math.floor((this.game.bet_time[this.game.resultHash.length - 1] - this.game.current_time[this.game.resultHash.length - 1]) / 1000)
+        if(this.isHost){
+          this.$store.dispatch("entitySubmit", {
+          type: "betchecking",
+          body: {
+            id: this.$route.params.id,
+          }
+        });
+        }
       }, 1000)
     },
     async onLeave() {

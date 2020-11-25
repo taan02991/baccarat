@@ -5,7 +5,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-var _ sdk.Msg = &MsgBet{}
+var _ sdk.Msg = &MsgBetChecking{}
 
 type MsgBetChecking struct {
 	Creator sdk.AccAddress `json:"creator" yaml:"creator"`
@@ -24,7 +24,7 @@ func (msg MsgBetChecking) Route() string {
 }
 
 func (msg MsgBetChecking) Type() string {
-	return "Bet"
+	return "MsgBetChecking"
 }
 
 func (msg MsgBetChecking) GetSigners() []sdk.AccAddress {

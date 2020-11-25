@@ -14,10 +14,10 @@ func GetTime(State string) Timer {
 	var outTime Timer
 	if State == "start" {
 		outTime.CurrentTime = currentTime
-		outTime.UpdateTime = currentTime + 15
+		outTime.UpdateTime = currentTime + 15 * 1000
 	} else if State == "betting" {
 		outTime.CurrentTime = currentTime
-		outTime.UpdateTime = currentTime + 30
+		outTime.UpdateTime = currentTime + 30 * 1000
 	}
 	return outTime
 }
