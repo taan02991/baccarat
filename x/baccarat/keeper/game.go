@@ -134,7 +134,7 @@ func (k Keeper) AppendResultHash(ctx sdk.Context, id string) {
 	//Edit here
 	handHashed := sha256.Sum256([]byte(hand))
 	game.ResultHash = append(game.ResultHash, string(handHashed[:]))
-	time := helper.GetTime("Betting")
+	time := helper.GetTime("betting")
 	game.CurrentTime = append(game.CurrentTime, time.CurrentTime)
 	game.BettingTime = append(game.BettingTime, time.UpdateTime)
 	value := k.cdc.MustMarshalBinaryLengthPrefixed(game)
