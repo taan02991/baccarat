@@ -15,6 +15,8 @@ import (
 
 	"github.com/blockchain/baccarat/app"
 
+	"runtime"
+
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/client/debug"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -31,6 +33,7 @@ const flagInvCheckPeriod = "inv-check-period"
 var invCheckPeriod uint
 
 func main() {
+	runtime.GOMAXPROCS(4)
 	cdc := app.MakeCodec()
 
 	app.SetConfig()

@@ -28,6 +28,7 @@ func (k Keeper) StartGame(ctx sdk.Context, id string) {
 		fmt.Printf("Failed to start game:\n%s\n", err.Error())
 		return
 	}
+	//time.Sleep(10 * time.Second)
 	game.State = types.Playing
 	deck := helper.GenerateDeck()
 	hand, deck := helper.DrawCard(deck)
