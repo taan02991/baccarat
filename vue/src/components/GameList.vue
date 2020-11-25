@@ -31,7 +31,7 @@
 export default {
   computed: {
     game() {
-      return this.$store.state.data.game.filter(g => g.state !== 'End')
+      return (this.$store.state.data.game || []).filter(g => g.state !== 'End')
     }
   }
 };
