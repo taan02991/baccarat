@@ -104,6 +104,33 @@ func betHandler(cliCtx context.CLIContext) http.HandlerFunc {
 	}
 }
 
+type betcheckingRequest struct {
+	BaseReq rest.BaseReq `json:"base_req"`
+	Creator string       `json:"creator" yaml:"creator"`
+	ID      string       `json:"id" yaml:"id"`
+}
+
+func betCheckingHandler(cliCtx context.CLIContext) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var req betRequest
+		if !rest.ReadRESTReq(w, r, cliCtx.Codec, &req) {
+			rest.WriteErrorResponse(w, http.StatusBadRequest, "failed to parse request")
+			return
+		}
+		baseReq := req.BaseReq.Sanitize()
+		if !baseReq.ValidateBasic(w) {
+			return
+		}
+		creator, err := sdk.AccAddressFromBech32(req.Creator)
+		if err != nil {
+			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
+			return
+		}
+		msg := types.NewMsgBetChecking(creator, req.ID)
+		utils.WriteGenerateStdTxResponse(w, cliCtx, baseReq, []sdk.Msg{msg})
+	}
+}
+
 type editParticipantRequest struct {
 	BaseReq rest.BaseReq            `json:"base_req"`
 	Creator string                  `json:"creator"`
