@@ -8,6 +8,7 @@ import (
   "github.com/blockchain/baccarat/x/baccarat/helper"
   "github.com/tendermint/tendermint/crypto"
   "strconv"
+  "crypto/sha256"
 )
 
 func (k Keeper) CreateGame(ctx sdk.Context, game types.Game) {
@@ -31,7 +32,8 @@ func (k Keeper) StartGame(ctx sdk.Context, id string) {
   hand, deck := helper.DrawCard(deck)
   helper.SetCache(id + "-deck", deck)
   helper.SetCache(id, hand)
-  game.ResultHash = append(game.ResultHash, "XXX")
+  handHashed := sha256.Sum256([]byte(hand))
+  game.ResultHash = append(game.ResultHash, string(handHashed[:]))
   value := k.cdc.MustMarshalBinaryLengthPrefixed(game)
   store.Set(key, value)
 }
@@ -149,7 +151,8 @@ func (k Keeper) AppendResultHash(ctx sdk.Context, id string) {
   hand, deck := helper.DrawCard(deck)
   helper.SetCache(id + "-deck", deck)
   helper.SetCache(id, hand)
-  game.ResultHash = append(game.ResultHash, "XXX")
+  handHashed := sha256.Sum256([]byte(hand))
+	game.ResultHash = append(game.ResultHash, string(handHashed[:]))
 	value := k.cdc.MustMarshalBinaryLengthPrefixed(game)
   store.Set(key, value)
 }
