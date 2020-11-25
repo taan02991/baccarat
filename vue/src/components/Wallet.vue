@@ -9,13 +9,7 @@
           class="password__input"
           placeholder="Your name"
         />
-        <div
-          :class="[
-            'button',
-            `button__error__${!!error}`
-          ]"
-          @click="register"
-        >
+        <div :class="['button', `button__error__${!!error}`]" @click="register">
           Register
         </div>
       </div>
@@ -31,7 +25,7 @@
           </div>
           <div v-if="newMnemonic" class="card__row">
             <span>
-              Your mnemonic is 
+              Your mnemonic is
               <span
                 class="coin__amount"
                 :style="{ 'text-transform': 'none' }"
@@ -86,6 +80,7 @@
         </div>
       </div>
     </div>
+    <game-list />
   </div>
 </template>
 
@@ -221,17 +216,19 @@
 <script>
 import IconUser from "@/components/IconUser.vue";
 import * as bip39 from "bip39";
+import GameList from "./GameList.vue";
 
 export default {
   components: {
-    IconUser
+    IconUser,
+    GameList
   },
   data() {
     return {
       name: "",
       password: "",
       error: false,
-      newMnemonic: "",
+      newMnemonic: ""
     };
   },
   computed: {
@@ -265,11 +262,14 @@ export default {
     async register() {
       if (!this.error) {
         try {
-          this.newMnemonic = await this.$store.dispatch("accountRegister", name);
+          this.newMnemonic = await this.$store.dispatch(
+            "accountRegister",
+            name
+          );
         } catch {
           this.error = true;
           setTimeout(() => {
-            this.error = false
+            this.error = false;
           }, 1000);
         }
       }
