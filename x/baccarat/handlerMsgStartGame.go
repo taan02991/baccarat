@@ -23,8 +23,8 @@ func handleMsgStartGame(ctx sdk.Context, k keeper.Keeper, msg types.MsgStartGame
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(
 			types.EventTypeUpdateGame,
-		),
 			sdk.NewAttribute(types.AttributeKeyGameID, msg.ID),
+		),
 	)
 	return &sdk.Result{Events: ctx.EventManager().Events()}, nil
 }
