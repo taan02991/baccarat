@@ -264,7 +264,7 @@ export default {
         try {
           this.newMnemonic = await this.$store.dispatch(
             "accountRegister",
-            name
+            this.name
           );
         } catch {
           this.error = true;
