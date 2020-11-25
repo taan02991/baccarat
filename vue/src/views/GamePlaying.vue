@@ -87,9 +87,13 @@
       <div class="w-2/5 text-right" v-if="game.state == 'Waiting'">
         <button
           @click="onStart"
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded w-4/5"
+          :disabled="!isHost"
+          :class="
+            (isHost ? 'bg-blue-500 hover:bg-blue-700' : 'bg-gray-500') +
+              ' text-white font-bold py-4 px-4 rounded w-4/5'
+          "
         >
-          Start
+          {{ isHost ? "Start" : "Waiting for Host" }}
         </button>
       </div>
     </div>
@@ -99,6 +103,7 @@
       :winner="resultWinner"
       :bet="resultBet"
       :amount="resultAmount"
+      :resulthash="resultHash"
     ></Result>
   </div>
 </template>
@@ -125,17 +130,19 @@ export default {
       resultWinner: "",
       resultBet: "",
       resultAmount: "",
+      resultHash: "",
       resultP1: { r: "", s: "" },
       resultP2: { r: "", s: "" },
       resultB1: { r: "", s: "" },
       resultB2: { r: "", s: "" },
       amount: "",
-      rpcClient: null
+      rpcClient: null,
+      timeRemaining: 0,
     };
   },
   async mounted() {
-    this.initConnection(10);
-    this.initRpcConnection();
+    await this.initConnection(10);
+    await this.initRpcConnection();
   },
   computed: {
     account() {
@@ -156,11 +163,14 @@ export default {
         })[0].amount;
       }
       return 0;
+    },
+    isHost() {
+      return this.game.participant && this.address == this.game.participant[0];
     }
   },
   methods: {
     async initConnection(n) {
-      axios
+      await axios
         .get(`/baccarat/game/${this.$route.params.id}`)
         .then(res => {
           this.game = res.data.result;
@@ -206,6 +216,7 @@ export default {
                 this.resultWinner = obj["winner"];
                 this.resultAmount = obj["reward"];
                 this.resultBet = obj["betSide"];
+                this.resultHash = obj["resultHash"];
                 this.resultShow = true;
                 let [player, banker] = obj["card"].split(";");
                 let [P1, P2] = player.split(",");
