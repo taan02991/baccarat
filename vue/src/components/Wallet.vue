@@ -80,7 +80,7 @@
         </div>
       </div>
     </div>
-    <game-list />
+    <game-list v-if="address" />
   </div>
 </template>
 
