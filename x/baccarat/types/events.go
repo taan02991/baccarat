@@ -14,6 +14,7 @@ const (
 	AttributeKeyBetSide			= "betSide"
 	AttributeKeyCard			= "card"
 	AttributeKeyResultHash		= "resultHash"
+	AttributeKeyRandomString 	= "randomString"
 
 	// TODO: Some events may not have values for that reason you want to emit that something happened.
 	// AttributeValueDoubleSign = "double_sign"

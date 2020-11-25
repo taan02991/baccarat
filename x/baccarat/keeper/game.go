@@ -9,6 +9,7 @@ import (
   "github.com/tendermint/tendermint/crypto"
   "strconv"
   "crypto/sha256"
+  "time"
 )
 
 func (k Keeper) CreateGame(ctx sdk.Context, game types.Game) {
@@ -32,7 +33,12 @@ func (k Keeper) StartGame(ctx sdk.Context, id string) {
   hand, deck := helper.DrawCard(deck)
   helper.SetCache(id + "-deck", deck)
   helper.SetCache(id, hand)
-  handHashed := sha256.Sum256([]byte(hand))
+
+  t := time.Now()
+  randomString := strconv.Itoa(t.Nanosecond())
+  helper.SetCache(id + "-random", randomString)
+
+  handHashed := sha256.Sum256([]byte(hand + randomString))
   game.ResultHash = append(game.ResultHash, fmt.Sprintf("%x", handHashed))
   value := k.cdc.MustMarshalBinaryLengthPrefixed(game)
   store.Set(key, value)
@@ -87,6 +93,7 @@ func (k Keeper) EditParticipant(ctx sdk.Context, id string, creator sdk.AccAddre
 
 func (k Keeper) RevealResult(ctx sdk.Context, id string) {
   var game types.Game
+  randomString, _ := helper.GetCache(id + "-random")
 	store := ctx.KVStore(k.storeKey)
   key := []byte(types.GamePrefix + id)
   err := k.cdc.UnmarshalBinaryLengthPrefixed(store.Get(key), &game)
@@ -116,6 +123,7 @@ func (k Keeper) RevealResult(ctx sdk.Context, id string) {
           sdk.NewAttribute(types.AttributeKeyBetSide, string(e.Side)),
           sdk.NewAttribute(types.AttributeKeyCard, string(v)),
           sdk.NewAttribute(types.AttributeKeyResultHash, game.ResultHash[len(game.ResultHash) - 1]),
+          sdk.NewAttribute(types.AttributeKeyRandomString, randomString),
         ),
       )
     } else {
@@ -129,6 +137,7 @@ func (k Keeper) RevealResult(ctx sdk.Context, id string) {
           sdk.NewAttribute(types.AttributeKeyBetSide, string(e.Side)),
           sdk.NewAttribute(types.AttributeKeyCard, string(v)),
           sdk.NewAttribute(types.AttributeKeyResultHash, game.ResultHash[len(game.ResultHash) - 1]),
+          sdk.NewAttribute(types.AttributeKeyRandomString, randomString),
         ),
       )
     }
@@ -151,7 +160,12 @@ func (k Keeper) AppendResultHash(ctx sdk.Context, id string) {
   hand, deck := helper.DrawCard(deck)
   helper.SetCache(id + "-deck", deck)
   helper.SetCache(id, hand)
-  handHashed := sha256.Sum256([]byte(hand))
+  
+  t := time.Now()
+  randomString := strconv.Itoa(t.Nanosecond())
+  helper.SetCache(id + "-random", randomString)
+
+  handHashed := sha256.Sum256([]byte(hand + randomString))
 	game.ResultHash = append(game.ResultHash, fmt.Sprintf("%x", handHashed))
 	value := k.cdc.MustMarshalBinaryLengthPrefixed(game)
   store.Set(key, value)

@@ -104,6 +104,7 @@
       :bet="resultBet"
       :amount="resultAmount"
       :resulthash="resultHash"
+      :randomstring="resultRandomString"
     ></Result>
   </div>
 </template>
@@ -131,6 +132,7 @@ export default {
       resultBet: "",
       resultAmount: "",
       resultHash: "",
+      resultRandomString: "",
       resultP1: { r: "", s: "" },
       resultP2: { r: "", s: "" },
       resultB1: { r: "", s: "" },
@@ -217,6 +219,7 @@ export default {
                 this.resultAmount = obj["reward"];
                 this.resultBet = obj["betSide"];
                 this.resultHash = obj["resultHash"];
+                this.resultRandomString = obj["randomString"]
                 this.resultShow = true;
                 let [player, banker] = obj["card"].split(";");
                 let [P1, P2] = player.split(",");
