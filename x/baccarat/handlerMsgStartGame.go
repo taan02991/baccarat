@@ -19,7 +19,7 @@ func handleMsgStartGame(ctx sdk.Context, k keeper.Keeper, msg types.MsgStartGame
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "You're not host of this room")
 	}
 
-	k.StartGame(ctx, msg.ID)
+	k.StartGame(ctx, msg.ID, msg.CurrentTime, msg.UpdateTime)
 	// temp <- struct {
 	// 	*sdk.Result
 	// 	error

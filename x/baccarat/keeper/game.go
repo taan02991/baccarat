@@ -19,7 +19,7 @@ func (k Keeper) CreateGame(ctx sdk.Context, game types.Game) {
 	store.Set(key, value)
 }
 
-func (k Keeper) StartGame(ctx sdk.Context, id string) {
+func (k Keeper) StartGame(ctx sdk.Context, id string, currentTime int64, updateTime int64) {
 	var game types.Game
 	store := ctx.KVStore(k.storeKey)
 	key := []byte(types.GamePrefix + id)
@@ -28,7 +28,6 @@ func (k Keeper) StartGame(ctx sdk.Context, id string) {
 		fmt.Printf("Failed to start game:\n%s\n", err.Error())
 		return
 	}
-	//time.Sleep(10 * time.Second)
 	game.State = types.Playing
 	deck := helper.GenerateDeck()
 	hand, deck := helper.DrawCard(deck)
@@ -37,6 +36,9 @@ func (k Keeper) StartGame(ctx sdk.Context, id string) {
 	// Hash
 	handHashed := sha256.Sum256([]byte(hand))
 	game.ResultHash = append(game.ResultHash, string(handHashed[:]))
+	game.CurrentTime = append(game.CurrentTime, currentTime)
+	game.StartingTime = append(game.StartingTime, updateTime)
+	game.BettingTime = append(game.BettingTime, updateTime+30)
 	value := k.cdc.MustMarshalBinaryLengthPrefixed(game)
 	store.Set(key, value)
 }
@@ -126,7 +128,6 @@ func (k Keeper) AppendResultHash(ctx sdk.Context, id string) {
 		fmt.Printf("Failed to append result hash:\n%s\n", err.Error())
 		return
 	}
-
 	deck, _ := helper.GetCache(id + "-deck")
 	hand, deck := helper.DrawCard(deck)
 	helper.SetCache(id+"-deck", deck)
