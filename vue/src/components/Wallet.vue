@@ -53,9 +53,9 @@
   margin-bottom: 1.5rem;
 }
 .card {
-  background: rgba(0, 0, 0, 0.03);
+  background: rgba(255, 255, 255, 0.03);
   border-radius: 0.25rem;
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(255, 255, 255, 0.5);
   padding: 0.25rem 0.75rem;
   overflow-x: hidden;
 }
@@ -63,7 +63,7 @@
   display: flex;
   align-items: center;
   margin: 0.5rem 0;
-  color: rgba(0, 0, 0, 0.25);
+  color: rgba(255, 255, 255, 0.25);
   font-size: 0.875rem;
   font-weight: 500;
   line-height: 1.5;
@@ -71,7 +71,7 @@
 .card__icon {
   width: 1.75rem;
   height: 1.75rem;
-  fill: rgba(0, 0, 0, 0.15);
+  fill: rgba(255, 255, 255, 0.15);
   flex-shrink: 0;
 }
 .card__desc {
@@ -95,14 +95,14 @@
   padding: 0.75rem;
   box-sizing: border-box;
   font-family: inherit;
-  background: rgba(0, 0, 0, 0.03);
+  background: rgba(255, 255, 255, 0.03);
   font-size: 0.85rem;
   border-radius: 0.25rem;
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(255, 255, 255, 0.5);
 }
 .button {
   margin-left: 1rem;
-  background: rgba(0, 0, 0, 0.03);
+  background: rgba(255, 255, 255, 0.03);
   padding: 0 1.5rem;
   white-space: nowrap;
   display: flex;
@@ -110,7 +110,7 @@
   justify-content: center;
   font-weight: 700;
   font-size: 0.85rem;
-  color: rgba(0, 0, 0, 0.25);
+  color: rgba(255, 255, 255, 0.25);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   border-radius: 0.25rem;
@@ -135,11 +135,11 @@
 }
 .password__input:focus {
   outline: none;
-  background: rgba(0, 0, 0, 0.06);
-  color: rgba(0, 0, 0, 0.5);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.5);
 }
 .password__input::placeholder {
-  color: rgba(0, 0, 0, 0.35);
+  color: rgba(255, 255, 255, 0.35);
   font-weight: 500;
 }
 .coin__amount {
