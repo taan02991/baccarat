@@ -25,6 +25,8 @@ func NewQuerier(k Keeper) sdk.Querier {
 			return listUser(ctx, k)
 		case types.QueryGetUser:
 			return getUser(ctx, k, path[1:])
+		case types.QueryGetUsers:
+			return getUsers(ctx, k, req)
 		default:
 			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "unknown baccarat query endpoint")
 		}

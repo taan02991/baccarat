@@ -8,24 +8,58 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td class="border px-4 py-2">1</td>
-        <td class="border px-4 py-2">Adam</td>
-        <td class="border px-4 py-2">Banker: 858</td>
-      </tr>
-      <tr>
-        <td class="border px-4 py-2">2</td>
-        <td class="border px-4 py-2">Adam</td>
-        <td class="border px-4 py-2">Player: 112</td>
-      </tr>
-      <tr>
-        <td class="border px-4 py-2">3</td>
-        <td class="border px-4 py-2">Chris</td>
-        <td class="border px-4 py-2">Tie: 1,280</td>
+      <tr v-for="(name, addr, index) in participantMap" v-bind:key="addr">
+        <td class="border px-4 py-2">{{ index }}</td>
+        <td class="border px-4 py-2">{{ name }}</td>
+        <td class="border px-4 py-2">
+          {{ status[addr] ? status[addr] : "Waiting" }}
+        </td>
       </tr>
     </tbody>
   </table>
 </template>
+
+<script>
+import axios from "axios";
+
+export default {
+  props: ["game"],
+  data: function() {
+    return {
+      participantMap: {}
+    };
+  },
+  computed: {
+    participant: function() {
+      return this.game.participant;
+    },
+    status: function() {
+      if (
+        this.game.resultHash == null ||
+        this.game.bet[this.game.resultHash.length - 1] == null
+      )
+        return {};
+      this.game.bet[this.game.resultHash.length - 1];
+      let obj = {};
+      this.game.bet[this.game.resultHash.length - 1].forEach(element => {
+        obj[element.creator] = element.side + ": " + element.amount[0].amount;
+      });
+      return obj;
+    }
+  },
+  watch: {
+    participant: function() {
+      axios
+        .post("/baccarat/users", {
+          addr: this.game.participant
+        })
+        .then(res => {
+          this.participantMap = res.data.result;
+        });
+    }
+  }
+};
+</script>
 
 <style scoped>
 .table {

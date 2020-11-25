@@ -47,7 +47,7 @@
     </div>
     <div class="flex mt-5">
       <div class="w-2/5">
-        <UserList />
+        <UserList :game="game"></UserList>
       </div>
       <div class="w-1/5">
         <div class="mt-1 flex rounded-md shadow-sm">
@@ -66,13 +66,13 @@
       </div>
       <div class="w-2/5 text-right" v-if="game.state == 'Playing'">
         <button
-        @click="onBet('Player')"
+          @click="onBet('Player')"
           class="bg-green-500 hover:bg-green-700 text-white font-bold py-4 px-4 rounded w-4/5"
         >
           Player
         </button>
         <button
-        @click="onBet('Banker')"
+          @click="onBet('Banker')"
           class="bg-red-500 hover:bg-red-700 text-white font-bold py-4 px-4 mt-3 rounded w-4/5"
         >
           Banker
@@ -105,7 +105,7 @@
 
 <script>
 import axios from "axios";
-import { RpcClient } from 'tendermint';
+import { RpcClient } from "tendermint";
 import Card from "@/components/Card.vue";
 import UserList from "@/components/UserList.vue";
 import Result from "@/components/Result.vue";
@@ -125,12 +125,12 @@ export default {
       resultWinner: "",
       resultBet: "",
       resultAmount: "",
-      resultP1: {r: "", s: ""},
-      resultP2: {r: "", s: ""},
-      resultB1: {r: "", s: ""},
-      resultB2: {r: "", s: ""},
+      resultP1: { r: "", s: "" },
+      resultP2: { r: "", s: "" },
+      resultB1: { r: "", s: "" },
+      resultB2: { r: "", s: "" },
       amount: 0,
-      rpcClient: null,
+      rpcClient: null
     };
   },
   async mounted() {
@@ -183,35 +183,43 @@ export default {
     },
     async initRpcConnection() {
       this.rpcClient = RpcClient(process.env.VUE_APP_TENDERMINT_NODE);
-      this.rpcClient.subscribe([`tm.event='Tx' AND updateGame.gameID = '${this.$route.params.id}'`], (data) => {
-        this.fetchGame()
-      })
-      this.rpcClient.subscribe([`tm.event='Tx' AND revealResult.gameID = '${this.$route.params.id}' AND revealResult.address = '${this.address}'`], ( data ) => {
-        data.TxResult.result.events.forEach( e => {
-          let obj = {}
-          if(e.type == "revealResult") {
-            e.attributes.forEach(element => {
-              let key = atob(element.key);
-              let value = atob(element.value);
-              obj[key] = value
-            });
-            if(obj["address"] === this.address) {
-              this.resultWinner = obj["winner"]
-              this.resultAmount = obj["reward"]
-              this.resultBet = obj["betSide"]
-              this.resultShow = true
-              let [player, banker] = obj["card"].split(";")
-              let [P1, P2] = player.split(",")
-              let [B1, B2] = banker.split(",")
-              this.resultP1 = {r: P1.slice(0, -1), s: P1.slice(-1)}
-              this.resultP2 = {r: P2.slice(0, -1), s: P2.slice(-1)}
-              this.resultB1 = {r: B1.slice(0, -1), s: B1.slice(-1)}
-              this.resultB2 = {r: B2.slice(0, -1), s: B2.slice(-1)}
-              return true
+      this.rpcClient.subscribe(
+        [`tm.event='Tx' AND updateGame.gameID = '${this.$route.params.id}'`],
+        () => {
+          this.fetchGame();
+        }
+      );
+      this.rpcClient.subscribe(
+        [
+          `tm.event='Tx' AND revealResult.gameID = '${this.$route.params.id}' AND revealResult.address = '${this.address}'`
+        ],
+        data => {
+          data.TxResult.result.events.forEach(e => {
+            let obj = {};
+            if (e.type == "revealResult") {
+              e.attributes.forEach(element => {
+                let key = atob(element.key);
+                let value = atob(element.value);
+                obj[key] = value;
+              });
+              if (obj["address"] === this.address) {
+                this.resultWinner = obj["winner"];
+                this.resultAmount = obj["reward"];
+                this.resultBet = obj["betSide"];
+                this.resultShow = true;
+                let [player, banker] = obj["card"].split(";");
+                let [P1, P2] = player.split(",");
+                let [B1, B2] = banker.split(",");
+                this.resultP1 = { r: P1.slice(0, -1), s: P1.slice(-1) };
+                this.resultP2 = { r: P2.slice(0, -1), s: P2.slice(-1) };
+                this.resultB1 = { r: B1.slice(0, -1), s: B1.slice(-1) };
+                this.resultB2 = { r: B2.slice(0, -1), s: B2.slice(-1) };
+                return true;
+              }
             }
-          }
-        })
-      })
+          });
+        }
+      );
     },
     async onLeave() {
       await this.$store.dispatch("entitySubmit", {
@@ -230,13 +238,13 @@ export default {
           id: this.$route.params.id
         }
       });
-      await this.fetchGame()
+      await this.fetchGame();
     },
     async onBet(side) {
-      this.resultP1 = {r: "", s: ""}
-      this.resultP2 = {r: "", s: ""}
-      this.resultB1 = {r: "", s: ""}
-      this.resultB2 = {r: "", s: ""}
+      this.resultP1 = { r: "", s: "" };
+      this.resultP2 = { r: "", s: "" };
+      this.resultB1 = { r: "", s: "" };
+      this.resultB2 = { r: "", s: "" };
       await this.$store.dispatch("entitySubmit", {
         type: "game/bet",
         body: {
@@ -245,15 +253,14 @@ export default {
           amount: this.amount + "token"
         }
       });
-      this.amount = 0
-      await this.fetchGame()
-      await this.$store.dispatch("accountUpdate")
-
+      this.amount = 0;
+      await this.fetchGame();
+      await this.$store.dispatch("accountUpdate");
     },
     async fetchGame() {
       await axios.get(`/baccarat/game/${this.$route.params.id}`).then(res => {
         this.game = res.data.result;
-      })
+      });
     }
   }
 };
