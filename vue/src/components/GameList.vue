@@ -14,7 +14,7 @@
       </thead>
       <tbody>
         <tr v-for="g in game" :key="g.id" class="border-2 border-gray-500">
-          <td class="text-center">{{ (g.result || []).length }}</td>
+          <td class="text-center">{{ (g.result || []).length + 1 }}</td>
           <td class="text-center">{{ g.participant.length }}</td>
           <td class="flex justify-center">
             <button class="bg-green-500" @click="$router.push(`/game/${g.id}`)">
