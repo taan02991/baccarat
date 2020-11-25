@@ -8,15 +8,15 @@ import (
 
 	abci "github.com/tendermint/tendermint/abci/types"
 
+	"github.com/blockchain/baccarat/x/baccarat/client/cli"
+	"github.com/blockchain/baccarat/x/baccarat/client/rest"
+	"github.com/blockchain/baccarat/x/baccarat/keeper"
+	"github.com/blockchain/baccarat/x/baccarat/types"
 	"github.com/cosmos/cosmos-sdk/client/context"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/x/bank"
-	"github.com/blockchain/baccarat/x/baccarat/client/cli"
-	"github.com/blockchain/baccarat/x/baccarat/client/rest"
-	"github.com/blockchain/baccarat/x/baccarat/keeper"
-	"github.com/blockchain/baccarat/x/baccarat/types"
 )
 
 // Type check to ensure the interface is properly implemented
@@ -106,6 +106,8 @@ func (AppModule) Route() string {
 
 // NewHandler returns an sdk.Handler for the baccarat module.
 func (am AppModule) NewHandler() sdk.Handler {
+
+	// var wg sync.WaitGroup
 	return NewHandler(am.keeper)
 }
 
