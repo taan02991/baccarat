@@ -33,7 +33,7 @@ func (k Keeper) StartGame(ctx sdk.Context, id string) {
   helper.SetCache(id + "-deck", deck)
   helper.SetCache(id, hand)
   handHashed := sha256.Sum256([]byte(hand))
-  game.ResultHash = append(game.ResultHash, string(handHashed[:]))
+  game.ResultHash = append(game.ResultHash, fmt.Sprintf("%x", handHashed))
   value := k.cdc.MustMarshalBinaryLengthPrefixed(game)
   store.Set(key, value)
 }
@@ -152,7 +152,7 @@ func (k Keeper) AppendResultHash(ctx sdk.Context, id string) {
   helper.SetCache(id + "-deck", deck)
   helper.SetCache(id, hand)
   handHashed := sha256.Sum256([]byte(hand))
-	game.ResultHash = append(game.ResultHash, string(handHashed[:]))
+	game.ResultHash = append(game.ResultHash, fmt.Sprintf("%x", handHashed))
 	value := k.cdc.MustMarshalBinaryLengthPrefixed(game)
   store.Set(key, value)
 }
