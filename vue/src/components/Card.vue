@@ -81,6 +81,7 @@ export default {
   position: absolute;
   top: 38%;
   text-align: center;
+  font-size: 32px;
 }
 
 .red {
